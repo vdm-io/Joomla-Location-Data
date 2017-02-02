@@ -1,0 +1,36 @@
+<updates>
+	<update>
+		<name>Location Data</name>
+		<description>You can via an url receive all the data related to any given IP address in a Json object.</description>
+		<element>com_locationdata</element>
+		<type>component</type>
+		<version>1.0.0</version>
+		<infourl title="Location Data!">https://www.vdm.io/</infourl>
+		<downloads>
+			<downloadurl type="full" format="zip"></downloadurl>
+		</downloads>
+		<tags>
+			<tag>stable</tag>
+		</tags>
+		<maintainer>Llewellyn van der Merwe</maintainer>
+		<maintainerurl>https://www.vdm.io/</maintainerurl>
+		<targetplatform name="joomla" version="3.*"/>
+	</update>
+	<update>
+		<name>Location Data</name>
+		<description>You can via an url receive all the data related to any given IP address in a Json object.</description>
+		<element>com_locationdata</element>
+		<type>component</type>
+		<version>1.0.1</version>
+		<infourl title="Location Data!">https://www.vdm.io/</infourl>
+		<downloads>
+			<downloadurl type="full" format="zip"></downloadurl>
+		</downloads>
+		<tags>
+			<tag>stable</tag>
+		</tags>
+		<maintainer>Llewellyn van der Merwe</maintainer>
+		<maintainerurl>https://www.vdm.io/</maintainerurl>
+		<targetplatform name="joomla" version="3.*"/>
+	</update>
+</updates>

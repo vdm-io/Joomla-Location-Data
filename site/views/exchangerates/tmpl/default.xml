@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<metadata>
+	<layout title="COM_LOCATIONDATA_MENU_EXCHANGERATES_TITLE" option="COM_LOCATIONDATA_MENU_EXCHANGERATES_OPTION">
+		<message>
+			<![CDATA[COM_LOCATIONDATA_MENU_EXCHANGERATES_DESC]]>
+		</message>
+	</layout>
+</metadata>

@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form
+	addrulepath="/administrator/components/com_locationdata/models/rules"
+	addfieldpath="/administrator/components/com_locationdata/models/fields"
+>
+	<fieldset name="details">
+		<!-- Default Fields. -->
+		<!-- Id Field. Type: Text (joomla) -->
+		<field
+			name="id"
+			type="text" class="readonly" label="JGLOBAL_FIELD_ID_LABEL"
+			description ="JGLOBAL_FIELD_ID_DESC" size="10" default="0"
+			readonly="true"
+		/>
+		<!-- Date Created Field. Type: Calendar (joomla) -->
+		<field
+			name="created"
+			type="calendar"
+			label="COM_LOCATIONDATA_EXCHANGE_RATE_CREATED_DATE_LABEL"
+			description="COM_LOCATIONDATA_EXCHANGE_RATE_CREATED_DATE_DESC"
+			size="22"
+
+			format="%Y-%m-%d %H:%M:%S"
+			filter="user_utc"
+		/>
+		<!-- User Created Field. Type: User (joomla) -->
+		<field
+			name="created_by"
+			type="user"
+			label="COM_LOCATIONDATA_EXCHANGE_RATE_CREATED_BY_LABEL"
+
+			description="COM_LOCATIONDATA_EXCHANGE_RATE_CREATED_BY_DESC"
+		/>
+		<!-- Published Field. Type: List (joomla) -->
+		<field name="published" type="list" label="JSTATUS"
+			description="JFIELD_PUBLISHED_DESC" class="chzn-color-state"
+
+			filter="intval" size="1" default="1" >
+			<option value="1">
+				JPUBLISHED</option>
+			<option value="0">
+				JUNPUBLISHED</option>
+			<option value="2">
+				JARCHIVED</option>
+			<option value="-2">
+				JTRASHED</option>
+		</field>
+		<!-- Date Modified Field. Type: Calendar (joomla) -->
+		<field name="modified" type="calendar" class="readonly"
+			label="COM_LOCATIONDATA_EXCHANGE_RATE_MODIFIED_DATE_LABEL" description="COM_LOCATIONDATA_EXCHANGE_RATE_MODIFIED_DATE_DESC"
+			size="22" readonly="true" format="%Y-%m-%d %H:%M:%S" filter="user_utc" />
+		<!-- User Modified Field. Type: User (joomla) -->
+		<field name="modified_by" type="user"
+			label="COM_LOCATIONDATA_EXCHANGE_RATE_MODIFIED_BY_LABEL"
+			description="COM_LOCATIONDATA_EXCHANGE_RATE_MODIFIED_BY_DESC"
+			class="readonly"
+			readonly="true"
+			filter="unset"
+		/>
+		<!-- Access Field. Type: Accesslevel (joomla) -->
+		<field name="access"
+			type="accesslevel"
+			label="JFIELD_ACCESS_LABEL"
+			description="JFIELD_ACCESS_DESC"
+			default="1"
+
+			required="false"
+		/>
+		<!-- Ordering Field. Type: Numbers (joomla) -->
+		<field
+			name="ordering"
+			type="number"
+			class="inputbox validate-ordering"
+			label="COM_LOCATIONDATA_EXCHANGE_RATE_ORDERING_LABEL"
+			description=""
+			default="0"
+			size="6"
+
+			required="false"
+		/>
+		<!-- Version Field. Type: Text (joomla) -->
+		<field
+			name="version"
+			type="text"
+			class="readonly"
+			label="COM_LOCATIONDATA_EXCHANGE_RATE_VERSION_LABEL"
+			description="COM_LOCATIONDATA_EXCHANGE_RATE_VERSION_DESC"
+			size="6"
+			readonly="true"
+			filter="unset"
+		/>
+		<!-- Dynamic Fields. -->
+		<!-- Name Field. Type: Text. (joomla) -->
+		<field
+			type="text"
+			name="name"
+			label="COM_LOCATIONDATA_EXCHANGE_RATE_NAME_LABEL"
+			size="40"
+			maxlength="150"
+			description="COM_LOCATIONDATA_EXCHANGE_RATE_NAME_DESCRIPTION"
+			class="text_area"
+			readonly="false"
+			disabled="false"
+			required="true"
+			filter="STRING"
+			message="Error! Please add name here."
+			hint="COM_LOCATIONDATA_EXCHANGE_RATE_NAME_HINT"
+		/>
+		<!-- Date_rate Field. Type: Calendar. (joomla) -->
+		<field
+			type="calendar"
+			name="date_rate"
+			label="COM_LOCATIONDATA_EXCHANGE_RATE_DATE_RATE_LABEL"
+			default="2016-01-01"
+			description="COM_LOCATIONDATA_EXCHANGE_RATE_DATE_RATE_DESCRIPTION"
+			format="%Y-%m-%d %H:%M:%S"
+			filter="user_utc"
+			size="22"
+			required="true"
+		/>
+		<!-- From Field. Type: Currency. (custom) -->
+		<field
+			type="currency"
+			name="from"
+			label="COM_LOCATIONDATA_EXCHANGE_RATE_FROM_LABEL"
+			description="COM_LOCATIONDATA_EXCHANGE_RATE_FROM_DESCRIPTION"
+			class="list_class"
+			multiple="false"
+			required="true"
+		/>
+		<!-- To Field. Type: Currency. (custom) -->
+		<field
+			type="currency"
+			name="to"
+			label="COM_LOCATIONDATA_EXCHANGE_RATE_TO_LABEL"
+			description="COM_LOCATIONDATA_EXCHANGE_RATE_TO_DESCRIPTION"
+			class="list_class"
+			multiple="false"
+			required="true"
+		/>
+		<!-- Rate Field. Type: Text. (joomla) -->
+		<field
+			type="text"
+			name="rate"
+			label="COM_LOCATIONDATA_EXCHANGE_RATE_RATE_LABEL"
+			size="10"
+			maxlength="50"
+			class="text_area"
+			readonly="false"
+			disabled="false"
+			required="true"
+			filter="FLOAT"
+			message="Error! Please add number here."
+			hint="COM_LOCATIONDATA_EXCHANGE_RATE_RATE_HINT"
+		/>
+		<!-- Alias Field. Type: Text. (joomla) -->
+		<field
+			type="text"
+			name="alias"
+			label="COM_LOCATIONDATA_EXCHANGE_RATE_ALIAS_LABEL"
+			description="JFIELD_ALIAS_DESC"
+			filter="STRING"
+			hint="COM_LOCATIONDATA_EXCHANGE_RATE_ALIAS_HINT"
+		/>
+		<!-- Ask Field. Type: Text. (joomla) -->
+		<field
+			type="text"
+			name="ask"
+			label="COM_LOCATIONDATA_EXCHANGE_RATE_ASK_LABEL"
+			size="10"
+			maxlength="50"
+			class="text_area"
+			readonly="false"
+			disabled="false"
+			required="true"
+			filter="FLOAT"
+			message="Error! Please add number here."
+			hint="COM_LOCATIONDATA_EXCHANGE_RATE_ASK_HINT"
+		/>
+		<!-- Bid Field. Type: Text. (joomla) -->
+		<field
+			type="text"
+			name="bid"
+			label="COM_LOCATIONDATA_EXCHANGE_RATE_BID_LABEL"
+			size="10"
+			maxlength="50"
+			class="text_area"
+			readonly="false"
+			disabled="false"
+			required="true"
+			filter="FLOAT"
+			message="Error! Please add number here."
+			hint="COM_LOCATIONDATA_EXCHANGE_RATE_BID_HINT"
+		/>
+	</fieldset>
+	
+	<!-- Access Control Fields. -->
+	<fieldset name="accesscontrol">
+		<!-- Asset Id Field. Type: Hidden (joomla) -->
+		<field
+			name="asset_id"
+			type="hidden"
+			filter="unset"
+		/>
+		<!-- Rules Field. Type: Rules (joomla) -->
+		<field
+			name="rules"
+			type="rules"
+			label="Permissions in relation to this exchange_rate"
+			translate_label="false"
+			filter="rules"
+			validate="rules"
+			class="inputbox"
+			component="com_locationdata"
+			section="exchange_rate"
+		/>
+	</fieldset>
+</form>
