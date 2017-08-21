@@ -11,7 +11,7 @@
 /-------------------------------------------------------------------------------------------------------------------------------/
 
 	@version		1.0.1
-	@build			2nd February, 2017
+	@build			20th August, 2017
 	@created		28th June, 2016
 	@package		Location Data
 	@subpackage		default_vdm.php
@@ -26,30 +26,27 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 
-$manifest = LocationdataHelper::manifest();
-JHtml::_('bootstrap.loadCss');
-
 ?>
-<img alt="<?php echo JText::_('COM_LOCATIONDATA'); ?>" src="components/com_locationdata/assets/images/component-300.jpg">
+<img alt="<?php echo JText::_('COM_LOCATIONDATA'); ?>" src="components/com_locationdata/assets/images/vdm-component.jpg">
 <ul class="list-striped">
-<li><b><?php echo JText::_('COM_LOCATIONDATA_VERSION'); ?>:</b> <?php echo $manifest->version; ?></li>
-<li><b><?php echo JText::_('COM_LOCATIONDATA_DATE'); ?>:</b> <?php echo $manifest->creationDate; ?></li>
-<li><b><?php echo JText::_('COM_LOCATIONDATA_AUTHOR'); ?>:</b> <a href="mailto:<?php echo $manifest->authorEmail; ?>"><?php echo $manifest->author; ?></a></li>
-<li><b><?php echo JText::_('COM_LOCATIONDATA_WEBSITE'); ?>:</b> <a href="<?php echo $manifest->authorUrl; ?>" target="_blank"><?php echo $manifest->authorUrl; ?></a></li>
-<li><b><?php echo JText::_('COM_LOCATIONDATA_LICENSE'); ?>:</b> <?php echo $manifest->license; ?></li>
-<li><b><?php echo $manifest->copyright; ?></b></li>
+	<li><b><?php echo JText::_('COM_LOCATIONDATA_VERSION'); ?>:</b> <?php echo $this->manifest->version; ?>&nbsp;&nbsp;<span class="update-notice"></span></li>
+	<li><b><?php echo JText::_('COM_LOCATIONDATA_DATE'); ?>:</b> <?php echo $this->manifest->creationDate; ?></li>
+	<li><b><?php echo JText::_('COM_LOCATIONDATA_AUTHOR'); ?>:</b> <a href="mailto:<?php echo $this->manifest->authorEmail; ?>"><?php echo $this->manifest->author; ?></a></li>
+	<li><b><?php echo JText::_('COM_LOCATIONDATA_WEBSITE'); ?>:</b> <a href="<?php echo $this->manifest->authorUrl; ?>" target="_blank"><?php echo $this->manifest->authorUrl; ?></a></li>
+	<li><b><?php echo JText::_('COM_LOCATIONDATA_LICENSE'); ?>:</b> <?php echo $this->manifest->license; ?></li>
+	<li><b><?php echo $this->manifest->copyright; ?></b></li>
 </ul>
 <div class="clearfix"></div>
 <?php if(LocationdataHelper::checkArray($this->contributors)): ?>
-<?php if(count($this->contributors) > 1): ?>
-<h3><?php echo JText::_('COM_LOCATIONDATA_CONTRIBUTORS'); ?></h3>
-<?php else: ?>
-<h3><?php echo JText::_('COM_LOCATIONDATA_CONTRIBUTOR'); ?></h3>
-<?php endif; ?>
-<ul class="list-striped">
-	<?php foreach($this->contributors as $contributor): ?>
-    <li><b><?php echo $contributor['title']; ?>:</b> <?php echo $contributor['name']; ?></li>
-    <?php endforeach; ?>
-</ul>
-<div class="clearfix"></div>
+	<?php if(count($this->contributors) > 1): ?>
+		<h3><?php echo JText::_('COM_LOCATIONDATA_CONTRIBUTORS'); ?></h3>
+	<?php else: ?>
+		<h3><?php echo JText::_('COM_LOCATIONDATA_CONTRIBUTOR'); ?></h3>
+	<?php endif; ?>
+	<ul class="list-striped">
+		<?php foreach($this->contributors as $contributor): ?>
+		<li><b><?php echo $contributor['title']; ?>:</b> <?php echo $contributor['name']; ?></li>
+		<?php endforeach; ?>
+	</ul>
+	<div class="clearfix"></div>
 <?php endif; ?>

@@ -149,7 +149,7 @@ class LocationdataViewCurrencies extends JViewLegacy
 			{
 				JToolBarHelper::custom('currencies.exportData', 'download', '', 'COM_LOCATIONDATA_EXPORT_DATA', true);
 			}
-                }
+                } 
 
 		if ($this->canDo->get('core.import') && $this->canDo->get('currency.import'))
 		{

@@ -192,7 +192,9 @@ class LocationdataViewExchange_rate extends JViewLegacy
 		$isNew = ($this->item->id < 1);
 		$document = JFactory::getDocument();
 		$document->setTitle(JText::_($isNew ? 'COM_LOCATIONDATA_EXCHANGE_RATE_NEW' : 'COM_LOCATIONDATA_EXCHANGE_RATE_EDIT'));
-		$document->addStyleSheet(JURI::root() . "administrator/components/com_locationdata/assets/css/exchange_rate.css"); 
+		$document->addStyleSheet(JURI::root() . "administrator/components/com_locationdata/assets/css/exchange_rate.css");
+		// Add Ajax Token
+		$document->addScriptDeclaration("var token = '".JSession::getFormToken()."';"); 
 		$document->addScript(JURI::root() . $this->script);
 		$document->addScript(JURI::root() . "administrator/components/com_locationdata/views/exchange_rate/submitbutton.js"); 
 		JText::script('view not acceptable. Error');

@@ -149,7 +149,7 @@ class LocationdataViewCountries extends JViewLegacy
 			{
 				JToolBarHelper::custom('countries.exportData', 'download', '', 'COM_LOCATIONDATA_EXPORT_DATA', true);
 			}
-                }
+                } 
 
 		if ($this->canDo->get('core.import') && $this->canDo->get('country.import'))
 		{
@@ -317,13 +317,13 @@ class LocationdataViewCountries extends JViewLegacy
 		if ($results)
 		{
 			$results = array_unique($results);
-			$filter = array();
+			$_filter = array();
 			foreach ($results as $worldzone)
 			{
 				// Now add the worldzone and its text to the options array
-				$filter[] = JHtml::_('select.option', $worldzone, $worldzone);
+				$_filter[] = JHtml::_('select.option', $worldzone, $worldzone);
 			}
-			return $filter;
+			return $_filter;
 		}
 		return false;
 	}

@@ -11,7 +11,7 @@
 /-------------------------------------------------------------------------------------------------------------------------------/
 
 	@version		1.0.1
-	@build			2nd February, 2017
+	@build			20th August, 2017
 	@created		28th June, 2016
 	@package		Location Data
 	@subpackage		default.php
@@ -29,7 +29,7 @@ defined('_JEXEC') or die('Restricted access');
 JHtml::_('behavior.tooltip');
 
 ?>
-<div id="j-main-container" class="span12">
+<div id="j-main-container">
 	<div class="form-horizontal">
 	<?php echo JHtml::_('bootstrap.startTabSet', 'cpanel_tab', array('active' => 'cpanel')); ?>
 

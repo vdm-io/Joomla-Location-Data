@@ -10,8 +10,8 @@
                                                         |_| 				
 /-------------------------------------------------------------------------------------------------------------------------------/
 
-	@version		@update number 37 of this MVC
-	@build			18th January, 2017
+	@version		@update number 41 of this MVC
+	@build			1st April, 2017
 	@created		14th August, 2016
 	@package		Location Data
 	@subpackage		exchangerates.php
@@ -78,6 +78,7 @@ class LocationdataModelExchangerates extends JModelList
 			array('a.id','a.published'),
 			array('id','published')));
 		$query->from($db->quoteName('#__locationdata_exchange_rate', 'a'));
+		// Get where a.published is 1
 		$query->where('a.published = 1');
 		$query->order('a.from ASC');
 

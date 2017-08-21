@@ -149,7 +149,7 @@ class LocationdataViewExchange_rates extends JViewLegacy
 			{
 				JToolBarHelper::custom('exchange_rates.exportData', 'download', '', 'COM_LOCATIONDATA_EXPORT_DATA', true);
 			}
-                }
+                } 
 
 		if ($this->canDo->get('core.import') && $this->canDo->get('exchange_rate.import'))
 		{

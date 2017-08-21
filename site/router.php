@@ -11,7 +11,7 @@
 /-------------------------------------------------------------------------------------------------------------------------------/
 
 	@version		1.0.1
-	@build			2nd February, 2017
+	@build			20th August, 2017
 	@created		28th June, 2016
 	@package		Location Data
 	@subpackage		router.php
@@ -137,9 +137,9 @@ class LocationdataRouter extends JComponentRouterBase
 				{
 					$vars['id'] = (int) $segments[$count-1];
 				}
-				else
+				elseif ($segments[$count-1])
 				{
-					$id = $this->getVar('exchangerates', $segments[$count-1], 'alias', 'id');
+					$id = $this->getVar('exchange_rate', $segments[$count-1], 'alias', 'id');
 					if($id)
 					{
 						$vars['id'] = $id;
@@ -151,11 +151,11 @@ class LocationdataRouter extends JComponentRouterBase
 		return $vars;
 	} 
 
-	protected function getVar($table, $where = null, $whereString = 'user', $what = 'id', $category = false, $operator = '=', $main = 'locationdata')
+	protected function getVar($table, $where = null, $whereString = null, $what = null, $category = false, $operator = '=', $main = 'locationdata')
 	{
-		if(!$where)
+		if(!$where || !$what || !$whereString)
 		{
-			$where = JFactory::getUser()->id;
+			return false;
 		}
 		// Get a db connection.
 		$db = JFactory::getDbo();
@@ -165,19 +165,42 @@ class LocationdataRouter extends JComponentRouterBase
 		$query->select($db->quoteName(array($what)));
 		if ('categories' == $table || 'category' == $table || $category)
 		{
-			$query->from($db->quoteName('#__categories'));
+			$getTable = '#__categories';
+			$query->from($db->quoteName($getTable));
 		}
 		else
 		{
-			$query->from($db->quoteName('#__'.$main.'_'.$table));
+			// we must check if the table exist (TODO not ideal)
+			$tables = $db->getTableList();
+			$app = JFactory::getApplication();
+			$prefix = $app->get('dbprefix');
+			$check = $prefix.$main.'_'.$table;
+			if (in_array($check, $tables))
+			{
+				$getTable = '#__'.$main.'_'.$table;
+				$query->from($db->quoteName($getTable));
+			}
+			else
+			{
+				return false;
+			}
 		}
 		if (is_numeric($where))
 		{
-			$query->where($db->quoteName($whereString) . ' '.$operator.' '.(int) $where);
+			return false;
 		}
-		elseif (is_string($where))
+		elseif ($this->checkString($where))
 		{
-			$query->where($db->quoteName($whereString) . ' '.$operator.' '. $db->quote((string)$where));
+			// we must first check if this table has the column
+			$columns = $db->getTableColumns($getTable);
+			if (isset($columns[$whereString]))
+			{
+				$query->where($db->quoteName($whereString) . ' '.$operator.' '. $db->quote((string)$where));
+			}
+			else
+			{
+				return false;
+			}
 		}
 		else
 		{
@@ -188,6 +211,15 @@ class LocationdataRouter extends JComponentRouterBase
 		if ($db->getNumRows())
 		{
 			return $db->loadResult();
+		}
+		return false;
+	}
+	
+	protected function checkString($string)
+	{
+		if (isset($string) && is_string($string) && strlen($string) > 0)
+		{
+			return true;
 		}
 		return false;
 	}

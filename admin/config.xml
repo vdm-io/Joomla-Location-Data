@@ -64,15 +64,17 @@
 		/>		
 		<!-- Spacer_hr_a Field. Type: Spacer. A None Database Field. (joomla) -->
 		<field type="spacer" name="spacer_hr_a" hr="true" class="spacer_hr_a" />		
-		<!-- Currency Field. Type: Currency. (custom) -->
+		<!-- Country Field. Type: Country. (custom) -->
 		<field
-			type="currency"
-			name="currency"
-			label="COM_LOCATIONDATA_CONFIG_CURRENCY_LABEL"
-			description="COM_LOCATIONDATA_CONFIG_CURRENCY_DESCRIPTION"
+			type="country"
+			name="country"
+			label="COM_LOCATIONDATA_CONFIG_COUNTRY_LABEL"
+			description="COM_LOCATIONDATA_CONFIG_COUNTRY_DESCRIPTION"
 			class="list_class"
 			multiple="false"
+			default="0"
 			required="true"
+			button="false"
 		/>		
 		<!-- Timer_exchange_rate Field. Type: List. (joomla) -->
 		<field

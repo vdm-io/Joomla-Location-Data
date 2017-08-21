@@ -61,6 +61,13 @@ class LocationdataFactory {
 	 * @var string
 	 */
 	public $defaultComponent;
+
+	/**
+	 * The Default Component Table name
+	 *
+	 * @var string
+	 */
+	private $tableComponent = '#__locationdata';
 	
 	/**
 	 * Numerical representation of IP address
@@ -89,10 +96,15 @@ class LocationdataFactory {
 	 * @param string $ip
 	 * @param ip $method
 	 */
-	function __construct($ip, $protocol = 4, $defaultComponent = 'com_locationdata')
+	function __construct($ip, $protocol = 4, $defaultComponent = 'com_locationdata', $forceLocationdataTable = true)
 	{
 		// set the default component
 		$this->defaultComponent = $defaultComponent;
+		// default table
+		if (!$forceLocationdataTable)
+		{
+			$this->tableComponent = str_replace('com_', '#__', $defaultComponent);
+		}
 		if (4 == $protocol && $this->checkIpAddr($ip))
 		{
 			// set IP
@@ -183,7 +195,7 @@ class LocationdataFactory {
 			switch($mode)
 			{
 				case 3:
-					if (!$this->default)
+					if (isset($this->ipInfoArr['IP_FROM']) && isset($this->ipInfoArr['IP_TO']))
 					{
 						return array(
 							'FROM'	=> $this->ipInfoArr['IP_FROM'],
@@ -192,7 +204,7 @@ class LocationdataFactory {
 					}
 					break;
 				case 4:
-					if (!$this->default)
+					if (isset($this->ipInfoArr['IP_FROM_STR']) && isset($this->ipInfoArr['IP_TO_STR']))
 					{
 						return array(
 							'FROM'	=> $this->ipInfoArr['IP_FROM_STR'],
@@ -201,7 +213,7 @@ class LocationdataFactory {
 					}
 					break;
 				case 7:
-					if (!$this->default)
+					if (isset($this->ipInfoArr['COUNTRY_NAME']) && isset($this->ipInfoArr['COUNTRY_CODE_TWO']) && isset($this->ipInfoArr['COUNTRY_CODE_THREE']))
 					{
 						return array(
 							'COUNTRY_NAME'		=> $this->ipInfoArr['COUNTRY_NAME'],
@@ -248,11 +260,11 @@ class LocationdataFactory {
 					return false;
 					break;
 				default:
-					if ($string)
+					if ($string && isset($get[$mode]) && isset($this->ipInfoArr[$get[$mode]]))
 					{
 						return $this->ipInfoArr[$get[$mode]];						
 					}
-					else
+					elseif (isset($get[$mode]) && isset($this->ipInfoArr[$get[$mode]]))
 					{
 						return array( $get[$mode] => $this->ipInfoArr[$get[$mode]] );
 					}
@@ -357,8 +369,8 @@ class LocationdataFactory {
 		$query
 			->select($db->quoteName(array_values($get),array_keys($get)))
 			->from($db->quoteName('#__locationdata_ip_table', 'a'))
-			->join('INNER', $db->quoteName('#__locationdata_country', 'b') . ' ON (' . $db->quoteName('a.cntry') . ' = ' . $db->quoteName('b.codethree') . ')')
-			->join('INNER', $db->quoteName('#__locationdata_currency', 'c') . ' ON (' . $db->quoteName('b.currency') . ' = ' . $db->quoteName('c.codethree') . ')')
+			->join('INNER', $db->quoteName($this->tableComponent . '_country', 'b') . ' ON (' . $db->quoteName('a.cntry') . ' = ' . $db->quoteName('b.codethree') . ')')
+			->join('INNER', $db->quoteName($this->tableComponent . '_currency', 'c') . ' ON (' . $db->quoteName('b.currency') . ' = ' . $db->quoteName('c.codethree') . ')')
 			->where($db->quoteName('a.ip_from') . ' <= ' . (int) $this->ipValue)
 			->where($db->quoteName('a.ip_to') . ' >= ' . (int) $this->ipValue)
 			->where($db->quoteName('a.protocol') . ' = ' . (int) $this->protocol);
@@ -377,7 +389,7 @@ class LocationdataFactory {
 		// should we use default
 		if ($this->default || $retry)
 		{
-			$this->ipInfoArr = $this->getCurrencyDetails();
+			$this->ipInfoArr = $this->getlocationDetails();
 		}
 		// only continue if is from is set
 		if($from)
@@ -510,7 +522,7 @@ class LocationdataFactory {
 		else
 		{
 			// load the currency details in
-			$currency = $this->getCurrencyDetails($currency);
+			$currency = $this->getlocationDetails($currency);
 		}
 		// set the number to currency
 		if (is_array($currency) && count($currency) > 4)
@@ -536,52 +548,145 @@ class LocationdataFactory {
 		return $number;
 	}
 
-	protected $currencyDetails = array();
+	protected $locationDetails = array();
 
-	protected function getCurrencyDetails($codethree = false)
+	protected function getlocationDetails($currency = false)
 	{
 		// check if currency codethree is set
-		if (!$codethree)
+		if (!$currency)
 		{
 			// get the main currency
-			$codethree = JComponentHelper::getParams($this->defaultComponent)->get('currency', 'USD');
+			$codethree = JComponentHelper::getParams($this->defaultComponent)->get('country', 'USA');
+			if ($countryDetails = $this->getCountryDetails($codethree))
+			{
+				$currency = $countryDetails['CURRENCY_CODE_THREE'];
+			}
 		}
 		// return cached data if set
-		if ($codethree && !isset($this->currencyDetails[$codethree]))
+		if ($currency && !isset($this->locationDetails[$currency]))
 		{
+			$select = array(
+				'b.name' => 'COUNTRY_NAME',
+				'b.codetwo' => 'COUNTRY_CODE_TWO',
+				'b.codethree'=> 'COUNTRY_CODE_THREE',
+				'a.name' => 'CURRENCY_NAME',
+				'a.codethree' => 'CURRENCY_CODE_THREE',
+				'a.numericcode' => 'CURRENCY_CODE_NUMERIC',
+				'a.symbol' => 'CURRENCY_SYMBOL',
+				'a.thousands' => 'CURRENCY_THOUSANDS',
+				'a.decimalplace' => 'CURRENCY_DECIMAL_PLACE',
+				'a.decimalsymbol' => 'CURRENCY_DECIMAL_SYMBOL',
+				'a.positivestyle' => 'CURRENCY_POSITIVE_STYLE',
+				'a.negativestyle' => 'CURRENCY_NEGATIVE_STYLE');
+			if (!isset($codethree) || !$codethree)
+			{
+				// remove the country selection
+				unset($select['b.name']);
+				unset($select['b.codethree']);
+				unset($select['b.codetwo']);
+			}
 			// Get a db connection.
 			$db = JFactory::getDbo();
 			// Create a new query object.
 			$query = $db->getQuery(true);
-			$query->select($db->quoteName(
-				array( 'a.name','a.codethree','a.numericcode','a.symbol','a.thousands','a.decimalplace',
-					'a.decimalsymbol','a.positivestyle','a.negativestyle'),
-				array(	'CURRENCY_NAME','CURRENCY_CODE_THREE','CURRENCY_CODE_NUMERIC','CURRENCY_SYMBOL','CURRENCY_THOUSANDS','CURRENCY_DECIMAL_PLACE',
-					'CURRENCY_DECIMAL_SYMBOL','CURRENCY_POSITIVE_STYLE','CURRENCY_NEGATIVE_STYLE')));
-			$query->from($db->quoteName('#__locationdata_currency', 'a'));
-			if (strlen($codethree) == 3)
+			$query->select($db->quoteName(array_keys($select), array_values($select)));
+			if (isset($codethree) && $codethree)
 			{
-				$query->where($db->quoteName('a.codethree') . ' = '.$db->quote($codethree));
+				$query->from($db->quoteName($this->tableComponent . '_country', 'b'));
+				$query->join('INNER', $db->quoteName($this->tableComponent . '_currency', 'a') . ' ON (' . $db->quoteName('b.currency') . ' = ' . $db->quoteName('a.codethree') . ')');
+				if (is_numeric($codethree))
+				{
+					$query->where($db->quoteName('b.id') . ' = '. (int) $codethree);
+				}
+				elseif (strlen($codethree) == 3)
+				{
+					$query->where($db->quoteName('b.codethree') . ' = '.$db->quote($codethree));
+				}
+				else
+				{
+					$query->where($db->quoteName('b.codethree') . ' = '.$db->quote('NONE'));
+				}
 			}
-			elseif (is_numeric($codethree))
+			else 
 			{
-				$query->where($db->quoteName('a.id') . ' = '. (int) $codethree);
-			}
-			else
-			{
-				$query->where($db->quoteName('a.codethree') . ' = '.$db->quote('NONE'));
+				$query->from($db->quoteName($this->tableComponent . '_currency', 'a'));
+				if (is_numeric($currency))
+				{
+					$query->where($db->quoteName('a.id') . ' = '. (int) $currency);
+				}
+				elseif (strlen($currency) == 3)
+				{
+					$query->where($db->quoteName('a.codethree') . ' = '.$db->quote($currency));
+				}
+				else
+				{
+					$query->where($db->quoteName('a.codethree') . ' = '.$db->quote('NONE'));
+				}
 			}
 			$db->setQuery($query);
 			$db->execute();
 			if ($db->getNumRows())
 			{
-				$this->currencyDetails[$codethree] = $db->loadAssoc();
+				$this->locationDetails[$currency] = $db->loadAssoc();
 			}
 		}
 		// make sure it has been set
-		if (isset($this->currencyDetails[$codethree]))
+		if (isset($this->locationDetails[$currency]))
 		{
-			return $this->currencyDetails[$codethree];
+			return $this->locationDetails[$currency];
+		}
+		return false;
+	}
+
+	protected $countryDetails = array();
+
+	protected function getCountryDetails($country = false)
+	{
+		// check if currency codethree is set
+		if (!$country)
+		{
+			// get the main currency
+			$country = JComponentHelper::getParams($this->defaultComponent)->get('country');
+		}
+		// return cached data if set
+		if ($country && !isset($this->countryDetails[$country]))
+		{
+			$select = array(
+				'b.name' => 'COUNTRY_NAME',
+				'b.codetwo' => 'COUNTRY_CODE_TWO',
+				'b.codethree'=> 'COUNTRY_CODE_THREE',
+				'a.name' => 'CURRENCY_NAME',
+				'a.codethree' => 'CURRENCY_CODE_THREE');
+			// Get a db connection.
+			$db = JFactory::getDbo();
+			// Create a new query object.
+			$query = $db->getQuery(true);
+			$query->select($db->quoteName(array_keys($select), array_values($select)));
+			$query->from($db->quoteName($this->tableComponent . '_country', 'b'));
+			$query->join('INNER', $db->quoteName($this->tableComponent . '_currency', 'a') . ' ON (' . $db->quoteName('b.currency') . ' = ' . $db->quoteName('a.codethree') . ')');
+			if (is_numeric($country))
+			{
+				$query->where($db->quoteName('b.id') . ' = '. (int) $country);
+			}
+			elseif (strlen($country) == 3)
+			{
+				$query->where($db->quoteName('b.codethree') . ' = '.$db->quote($country));
+			}
+			else
+			{
+				$query->where($db->quoteName('b.codethree') . ' = '.$db->quote('NONE'));
+			}
+			$db->setQuery($query);
+			$db->execute();
+			if ($db->getNumRows())
+			{
+				$this->countryDetails[$country] = $db->loadAssoc();
+			}
+		}
+		// make sure it has been set
+		if (isset($this->countryDetails[$country]))
+		{
+			return $this->countryDetails[$country];
 		}
 		return false;
 	}

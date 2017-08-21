@@ -11,7 +11,7 @@
 /-------------------------------------------------------------------------------------------------------------------------------/
 
 	@version		1.0.1
-	@build			2nd February, 2017
+	@build			20th August, 2017
 	@created		28th June, 2016
 	@package		Location Data
 	@subpackage		view.html.php
@@ -49,7 +49,8 @@ class LocationdataViewImport extends JViewLegacy
 		}
 
 		// Check for errors.
-		if (count($errors = $this->get('Errors'))){
+		if (count($errors = $this->get('Errors')))
+		{
 			JError::raiseError(500, implode('<br />', $errors));
 			return false;
 		}

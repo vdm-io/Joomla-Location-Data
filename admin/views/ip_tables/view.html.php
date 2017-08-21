@@ -149,7 +149,7 @@ class LocationdataViewIp_tables extends JViewLegacy
 			{
 				JToolBarHelper::custom('ip_tables.exportData', 'download', '', 'COM_LOCATIONDATA_EXPORT_DATA', true);
 			}
-                }
+                } 
 
 		if ($this->canDo->get('core.import') && $this->canDo->get('ip_table.import'))
 		{
@@ -341,15 +341,15 @@ class LocationdataViewIp_tables extends JViewLegacy
 			// get model
 			$model = $this->getModel();
 			$results = array_unique($results);
-			$filter = array();
+			$_filter = array();
 			foreach ($results as $protocol)
 			{
 				// Translate the protocol selection
 				$text = $model->selectionTranslation($protocol,'protocol');
 				// Now add the protocol and its text to the options array
-				$filter[] = JHtml::_('select.option', $protocol, JText::_($text));
+				$_filter[] = JHtml::_('select.option', $protocol, JText::_($text));
 			}
-			return $filter;
+			return $_filter;
 		}
 		return false;
 	}
@@ -375,13 +375,13 @@ class LocationdataViewIp_tables extends JViewLegacy
 		if ($results)
 		{
 			$results = array_unique($results);
-			$filter = array();
+			$_filter = array();
 			foreach ($results as $registry)
 			{
 				// Now add the registry and its text to the options array
-				$filter[] = JHtml::_('select.option', $registry, $registry);
+				$_filter[] = JHtml::_('select.option', $registry, $registry);
 			}
-			return $filter;
+			return $_filter;
 		}
 		return false;
 	}

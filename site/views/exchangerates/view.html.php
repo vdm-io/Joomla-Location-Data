@@ -10,8 +10,8 @@
                                                         |_| 				
 /-------------------------------------------------------------------------------------------------------------------------------/
 
-	@version		@update number 37 of this MVC
-	@build			18th January, 2017
+	@version		@update number 41 of this MVC
+	@build			1st April, 2017
 	@created		14th August, 2016
 	@package		Location Data
 	@subpackage		view.html.php
@@ -49,7 +49,7 @@ class LocationdataViewExchangerates extends JViewLegacy
 		// Check for errors.
 		if (count($errors = $this->get('Errors')))
 		{
-			JError::raiseError(500, implode("\n", $errors));
+			JError::raiseError(500, implode(PHP_EOL, $errors));
 			return false;
 		}
 		if (isset($this->items) && LocationdataHelper::checkArray($this->items))
@@ -113,7 +113,7 @@ class LocationdataViewExchangerates extends JViewLegacy
 		// Load the header checker class.
 		require_once( JPATH_COMPONENT_SITE.'/helpers/headercheck.php' );
 		// Initialize the header checker.
-		$HeaderCheck = new HeaderCheck;
+		$HeaderCheck = new locationdataHeaderCheck;
 
 		// Load uikit options.
 		$uikit = $this->params->get('uikit_load');

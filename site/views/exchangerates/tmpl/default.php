@@ -10,8 +10,8 @@
                                                         |_| 				
 /-------------------------------------------------------------------------------------------------------------------------------/
 
-	@version		@update number 37 of this MVC
-	@build			18th January, 2017
+	@version		@update number 41 of this MVC
+	@build			1st April, 2017
 	@created		14th August, 2016
 	@package		Location Data
 	@subpackage		default.php
@@ -41,10 +41,22 @@ defined('_JEXEC') or die('Restricted access');
 		var columnsUrl = "<?php echo JURI::root(); ?>index.php?option=com_locationdata&task=ajax.getColumns&format=json&raw=true&page=ExchangeRates&token="+token;
 		var rowsUrl = "<?php echo JURI::root(); ?>index.php?option=com_locationdata&task=ajax.getRows&format=json&raw=true&page=ExchangeRates&token="+token+"&key="+key;
 		jQuery(function($){
-			$('.footable').footable({
+			var tableObject = FooTable.init('.footable', {
 				"columns": $.get(columnsUrl),
 				"rows":  $.get(rowsUrl),
 			});
+			var win = jQuery(window);
+			win.scroll(function() {
+				if(win.scrollTop() + win.height() >= jQuery(document).height()) {
+					loadMoreItems();
+				}
+			});
+			function loadMoreItems() {
+				jQuery.get(rowsUrl).then(function(rows) {
+					// and then append them using either
+					tableObject.rows.load(rows, true);
+				});
+			}
 		});
 	</script>
 <?php else: ?>

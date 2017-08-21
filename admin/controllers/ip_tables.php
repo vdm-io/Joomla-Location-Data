@@ -107,5 +107,5 @@ class LocationdataControllerIp_tables extends JControllerAdmin
 		$message = JText::_('COM_LOCATIONDATA_IMPORT_FAILED');
 		$this->setRedirect(JRoute::_('index.php?option=com_locationdata&view=ip_tables', false), $message, 'error');
 		return;
-	} 
+	}  
 }

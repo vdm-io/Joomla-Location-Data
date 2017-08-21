@@ -11,7 +11,7 @@
 /-------------------------------------------------------------------------------------------------------------------------------/
 
 	@version		1.0.1
-	@build			2nd February, 2017
+	@build			20th August, 2017
 	@created		28th June, 2016
 	@package		Location Data
 	@subpackage		view.html.php
@@ -50,10 +50,13 @@ class LocationdataViewLocationdata extends JViewLegacy
 		$this->icons			= $this->get('Icons');
 		$this->contributors		= LocationdataHelper::getContributors();
 		$this->github	= $this->get('Github');
-		$this->readme	= $this->get('Readme');
 		$this->wiki	= $this->get('Wiki');
 		$this->noticeboard	= $this->get('Noticeboard');
-
+		$this->readme	= $this->get('Readme');
+		
+		// get the manifest details of the component
+		$this->manifest = LocationdataHelper::manifest();
+		
 		// Set the toolbar
 		$this->addToolBar();
 
@@ -88,15 +91,19 @@ class LocationdataViewLocationdata extends JViewLegacy
 	/**
 	 * Method to set up the document properties
 	 *
-	 *
 	 * @return void
 	 */
 	protected function setDocument()
 	{
 		$document = JFactory::getDocument();
-
+		
+		// add dashboard style sheets
 		$document->addStyleSheet(JURI::root() . "administrator/components/com_locationdata/assets/css/dashboard.css");
-
+		
+		// set page title
 		$document->setTitle(JText::_('COM_LOCATIONDATA_DASHBOARD'));
+		
+		// add manifest to page JavaScript
+		$document->addScriptDeclaration("var manifest = jQuery.parseJSON('" . json_encode($this->manifest) . "');", "text/javascript");
 	}
 }

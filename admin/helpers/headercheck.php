@@ -11,7 +11,7 @@
 /-------------------------------------------------------------------------------------------------------------------------------/
 
 	@version		1.0.1
-	@build			2nd February, 2017
+	@build			20th August, 2017
 	@created		28th June, 2016
 	@package		Location Data
 	@subpackage		headercheck.php
@@ -26,7 +26,7 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 
-class HeaderCheck
+class locationdataHeaderCheck
 {
 	function js_loaded($script_name)
 	{

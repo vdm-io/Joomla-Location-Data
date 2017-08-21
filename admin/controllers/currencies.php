@@ -107,5 +107,5 @@ class LocationdataControllerCurrencies extends JControllerAdmin
 		$message = JText::_('COM_LOCATIONDATA_IMPORT_FAILED');
 		$this->setRedirect(JRoute::_('index.php?option=com_locationdata&view=currencies', false), $message, 'error');
 		return;
-	} 
+	}  
 }

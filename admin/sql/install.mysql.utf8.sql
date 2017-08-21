@@ -1,24 +1,24 @@
 CREATE TABLE IF NOT EXISTS `#__locationdata_country` (
 	`id` INT(11) NOT NULL AUTO_INCREMENT,
-	`asset_id` INT(255) UNSIGNED NOT NULL DEFAULT '0',
+	`asset_id` INT(10) unsigned NOT NULL DEFAULT 0 COMMENT 'FK to the #__assets table.',
 	`alias` CHAR(64) NOT NULL DEFAULT '',
 	`codethree` CHAR(7) NOT NULL DEFAULT '',
 	`codetwo` CHAR(7) NOT NULL DEFAULT '',
 	`currency` CHAR(7) NOT NULL DEFAULT '',
 	`name` VARCHAR(255) NOT NULL DEFAULT '',
 	`worldzone` VARCHAR(255) NOT NULL DEFAULT '',
-	`params` TEXT NOT NULL,
-	`published` TINYINT(1) NOT NULL DEFAULT '1',
-	`created_by` INT(11) NOT NULL DEFAULT '0',
-	`modified_by` INT(11) NOT NULL DEFAULT '0',
+	`params` text NOT NULL DEFAULT '',
+	`published` TINYINT(3) NOT NULL DEFAULT 1,
+	`created_by` INT(10) unsigned NOT NULL DEFAULT 0,
+	`modified_by` INT(10) unsigned NOT NULL DEFAULT 0,
 	`created` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00',
 	`modified` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00',
-	`checked_out` INT(11) NOT NULL,
+	`checked_out` int(11) unsigned NOT NULL DEFAULT 0,
 	`checked_out_time` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00',
-	`version` INT(11) NOT NULL DEFAULT '1',
-	`hits` INT(11) NOT NULL DEFAULT '0',
-	`access` INT(11) DEFAULT NULL,
-	`ordering` INT(11) NOT NULL DEFAULT '0',
+	`version` INT(10) unsigned NOT NULL DEFAULT 1,
+	`hits` INT(10) unsigned NOT NULL DEFAULT 0,
+	`access` INT(10) unsigned NOT NULL DEFAULT 0,
+	`ordering` INT(11) NOT NULL DEFAULT 0,
 	PRIMARY KEY  (`id`),
 	KEY `idx_access` (`access`),
 	KEY `idx_checkout` (`checked_out`),
@@ -35,29 +35,29 @@ CREATE TABLE IF NOT EXISTS `#__locationdata_country` (
 
 CREATE TABLE IF NOT EXISTS `#__locationdata_currency` (
 	`id` INT(11) NOT NULL AUTO_INCREMENT,
-	`asset_id` INT(255) UNSIGNED NOT NULL DEFAULT '0',
+	`asset_id` INT(10) unsigned NOT NULL DEFAULT 0 COMMENT 'FK to the #__assets table.',
 	`alias` CHAR(64) NOT NULL DEFAULT '',
 	`codethree` CHAR(7) NOT NULL DEFAULT '',
-	`decimalplace` INT(7) NOT NULL DEFAULT '0',
+	`decimalplace` INT(7) NOT NULL DEFAULT 0,
 	`decimalsymbol` CHAR(7) NOT NULL DEFAULT '',
 	`name` VARCHAR(255) NOT NULL DEFAULT '',
 	`negativestyle` VARCHAR(255) NOT NULL DEFAULT '',
-	`numericcode` INT(10) NOT NULL DEFAULT '0',
+	`numericcode` INT(10) NOT NULL DEFAULT 0,
 	`positivestyle` VARCHAR(255) NOT NULL DEFAULT '',
 	`symbol` CHAR(11) NOT NULL DEFAULT '',
 	`thousands` CHAR(7) NOT NULL DEFAULT '',
-	`params` TEXT NOT NULL,
-	`published` TINYINT(1) NOT NULL DEFAULT '1',
-	`created_by` INT(11) NOT NULL DEFAULT '0',
-	`modified_by` INT(11) NOT NULL DEFAULT '0',
+	`params` text NOT NULL DEFAULT '',
+	`published` TINYINT(3) NOT NULL DEFAULT 1,
+	`created_by` INT(10) unsigned NOT NULL DEFAULT 0,
+	`modified_by` INT(10) unsigned NOT NULL DEFAULT 0,
 	`created` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00',
 	`modified` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00',
-	`checked_out` INT(11) NOT NULL,
+	`checked_out` int(11) unsigned NOT NULL DEFAULT 0,
 	`checked_out_time` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00',
-	`version` INT(11) NOT NULL DEFAULT '1',
-	`hits` INT(11) NOT NULL DEFAULT '0',
-	`access` INT(11) DEFAULT NULL,
-	`ordering` INT(11) NOT NULL DEFAULT '0',
+	`version` INT(10) unsigned NOT NULL DEFAULT 1,
+	`hits` INT(10) unsigned NOT NULL DEFAULT 0,
+	`access` INT(10) unsigned NOT NULL DEFAULT 0,
+	`ordering` INT(11) NOT NULL DEFAULT 0,
 	PRIMARY KEY  (`id`),
 	UNIQUE KEY `idx_codethree` (`codethree`),
 	KEY `idx_access` (`access`),
@@ -72,7 +72,7 @@ CREATE TABLE IF NOT EXISTS `#__locationdata_currency` (
 
 CREATE TABLE IF NOT EXISTS `#__locationdata_exchange_rate` (
 	`id` INT(11) NOT NULL AUTO_INCREMENT,
-	`asset_id` INT(255) UNSIGNED NOT NULL DEFAULT '0',
+	`asset_id` INT(10) unsigned NOT NULL DEFAULT 0 COMMENT 'FK to the #__assets table.',
 	`alias` CHAR(64) NOT NULL DEFAULT '',
 	`ask` VARCHAR(255) NOT NULL DEFAULT '',
 	`bid` VARCHAR(255) NOT NULL DEFAULT '',
@@ -81,18 +81,18 @@ CREATE TABLE IF NOT EXISTS `#__locationdata_exchange_rate` (
 	`name` VARCHAR(255) NOT NULL DEFAULT '',
 	`rate` VARCHAR(255) NOT NULL DEFAULT '',
 	`to` CHAR(7) NOT NULL DEFAULT '',
-	`params` TEXT NOT NULL,
-	`published` TINYINT(1) NOT NULL DEFAULT '1',
-	`created_by` INT(11) NOT NULL DEFAULT '0',
-	`modified_by` INT(11) NOT NULL DEFAULT '0',
+	`params` text NOT NULL DEFAULT '',
+	`published` TINYINT(3) NOT NULL DEFAULT 1,
+	`created_by` INT(10) unsigned NOT NULL DEFAULT 0,
+	`modified_by` INT(10) unsigned NOT NULL DEFAULT 0,
 	`created` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00',
 	`modified` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00',
-	`checked_out` INT(11) NOT NULL,
+	`checked_out` int(11) unsigned NOT NULL DEFAULT 0,
 	`checked_out_time` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00',
-	`version` INT(11) NOT NULL DEFAULT '1',
-	`hits` INT(11) NOT NULL DEFAULT '0',
-	`access` INT(11) DEFAULT NULL,
-	`ordering` INT(11) NOT NULL DEFAULT '0',
+	`version` INT(10) unsigned NOT NULL DEFAULT 1,
+	`hits` INT(10) unsigned NOT NULL DEFAULT 0,
+	`access` INT(10) unsigned NOT NULL DEFAULT 0,
+	`ordering` INT(11) NOT NULL DEFAULT 0,
 	PRIMARY KEY  (`id`),
 	KEY `idx_access` (`access`),
 	KEY `idx_checkout` (`checked_out`),
@@ -107,26 +107,26 @@ CREATE TABLE IF NOT EXISTS `#__locationdata_exchange_rate` (
 
 CREATE TABLE IF NOT EXISTS `#__locationdata_ip_table` (
 	`id` INT(11) NOT NULL AUTO_INCREMENT,
-	`asset_id` INT(255) UNSIGNED NOT NULL DEFAULT '0',
-	`assigned` BIGINT(20) NOT NULL DEFAULT '0',
+	`asset_id` INT(10) unsigned NOT NULL DEFAULT 0 COMMENT 'FK to the #__assets table.',
+	`assigned` BIGINT(20) NOT NULL DEFAULT 0,
 	`cntry` CHAR(7) NOT NULL DEFAULT '',
 	`ctry` CHAR(7) NOT NULL DEFAULT '',
 	`ip_from` VARCHAR(255) NOT NULL DEFAULT '',
 	`ip_to` VARCHAR(255) NOT NULL DEFAULT '',
-	`protocol` INT(1) NOT NULL DEFAULT '0',
+	`protocol` INT(1) NOT NULL DEFAULT 0,
 	`registry` CHAR(11) NOT NULL DEFAULT '',
-	`params` TEXT NOT NULL,
-	`published` TINYINT(1) NOT NULL DEFAULT '1',
-	`created_by` INT(11) NOT NULL DEFAULT '0',
-	`modified_by` INT(11) NOT NULL DEFAULT '0',
+	`params` text NOT NULL DEFAULT '',
+	`published` TINYINT(3) NOT NULL DEFAULT 1,
+	`created_by` INT(10) unsigned NOT NULL DEFAULT 0,
+	`modified_by` INT(10) unsigned NOT NULL DEFAULT 0,
 	`created` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00',
 	`modified` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00',
-	`checked_out` INT(11) NOT NULL,
+	`checked_out` int(11) unsigned NOT NULL DEFAULT 0,
 	`checked_out_time` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00',
-	`version` INT(11) NOT NULL DEFAULT '1',
-	`hits` INT(11) NOT NULL DEFAULT '0',
-	`access` INT(11) DEFAULT NULL,
-	`ordering` INT(11) NOT NULL DEFAULT '0',
+	`version` INT(10) unsigned NOT NULL DEFAULT 1,
+	`hits` INT(10) unsigned NOT NULL DEFAULT 0,
+	`access` INT(10) unsigned NOT NULL DEFAULT 0,
+	`ordering` INT(11) NOT NULL DEFAULT 0,
 	PRIMARY KEY  (`id`),
 	KEY `idx_access` (`access`),
 	KEY `idx_checkout` (`checked_out`),
@@ -141,8 +141,6 @@ CREATE TABLE IF NOT EXISTS `#__locationdata_ip_table` (
 	KEY `idx_assigned` (`assigned`),
 	KEY `idx_ctry` (`ctry`)
 ) ENGINE=MyISAM AUTO_INCREMENT=0 DEFAULT CHARSET=utf8;
-
-
 
 --
 -- Dumping data for table `#__locationdata_country`
@@ -566,7 +564,14 @@ INSERT INTO `#__locationdata_currency` (`id`, `alias`, `codethree`, `decimalplac
 (163, '', 'ZWD', 2, ',', 'Zimbabwean dollar', '{sign}{number} {symbol}', 932, '{number} {symbol}', 'Z$', '', '', 2, '', '', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '', '0000-00-00 00:00:00', 1, '', '', 163),
 (164, '', 'ZZZ', 2, ',', 'Reserved', '', '', '', 'O', '', '', 2, '', '', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '', '0000-00-00 00:00:00', 1, '', '', 164);
 
+
+
 --
--- Always insure this column is large enough for all the access control values.
+-- Always insure this column rules is large enough for all the access control values.
 --
 ALTER TABLE `#__assets` CHANGE `rules` `rules` MEDIUMTEXT NOT NULL COMMENT 'JSON encoded access control.';
+
+--
+-- Always insure this column name is large enough for long component and view names.
+--
+ALTER TABLE `#__assets` CHANGE `name` `name` VARCHAR(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'The unique name for the asset.';

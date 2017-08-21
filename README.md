@@ -1,6 +1,6 @@
 # Location Data (1.0.1)
 
- ![Location Data image](https://raw.githubusercontent.com/vdm-io/Joomla-Location-Data/master/admin/assets/images/component-300.jpg "The Location Data")
+ ![Location Data image](https://raw.githubusercontent.com/vdm-io/Joomla-Location-Data/master/admin/assets/images/vdm-component.jpg "The Location Data")
 
 You can via an url receive all the data related to any given location in a Json object.
 
@@ -22,7 +22,7 @@ Build Details
 + *Author*: [Llewellyn van der Merwe](mailto:joomla@vdm.io)
 + *Name*: [Location Data](https://www.vdm.io/)
 + *First Build*: 28th June, 2016
-+ *Last Build*: 2nd February, 2017
++ *Last Build*: 20th August, 2017
 + *Version*: 1.0.1
 + *Copyright*: Copyright (C) 2015. All Rights Reserved
 + *License*: GNU/GPL Version 2 or later - http://www.gnu.org/licenses/gpl-2.0.html

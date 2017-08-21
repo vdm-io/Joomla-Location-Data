@@ -53,7 +53,7 @@ class LocationdataViewUpdatedata extends JViewLegacy
 		// Check for errors.
 		if (count($errors = $this->get('Errors')))
 		{
-			JError::raiseError(500, implode("\n", $errors));
+			JError::raiseError(500, implode(PHP_EOL, $errors));
 			return false;
 		}
 		$today = JFactory::getDate()->toUnix();
@@ -186,7 +186,7 @@ function getAgo($amount, $type)
 		// Load the header checker class.
 		require_once( JPATH_COMPONENT_ADMINISTRATOR.'/helpers/headercheck.php' );
 		// Initialize the header checker.
-		$HeaderCheck = new HeaderCheck;
+		$HeaderCheck = new locationdataHeaderCheck;
 
 		// Load uikit options.
 		$uikit = $this->params->get('uikit_load');

@@ -11,7 +11,7 @@
 /-------------------------------------------------------------------------------------------------------------------------------/
 
 	@version		1.0.1
-	@build			2nd February, 2017
+	@build			20th August, 2017
 	@created		28th June, 2016
 	@package		Location Data
 	@subpackage		script.php
@@ -538,7 +538,7 @@ class com_locationdataInstallerScript
 
 			// Field to update.
 			$fields = array(
-				$db->quoteName('params') . ' = ' . $db->quote('{"autorName":"Llewellyn van der Merwe","autorEmail":"joomla@vdm.io","local_encryption":"localKey34fdsEkl","currency":"USD","timer_exchange_rate":"-5 hours","timer_ip_table":"-1 day","use_proxy":"true","check_in":"-1 day","save_history":"1","history_limit":"10","uikit_load":"1","uikit_min":"","uikit_style":""}'),
+				$db->quoteName('params') . ' = ' . $db->quote('{"autorName":"Llewellyn van der Merwe","autorEmail":"joomla@vdm.io","local_encryption":"localKey34fdsEkl","country":"USA","timer_exchange_rate":"-5 hours","timer_ip_table":"-1 day","use_proxy":"true","check_in":"-1 day","save_history":"1","history_limit":"10","uikit_load":"1","uikit_min":"","uikit_style":""}'),
 			);
 
 			// Condition.
@@ -550,7 +550,7 @@ class com_locationdataInstallerScript
 			$db->setQuery($query);
 			$allDone = $db->execute();
 			echo '<a target="_blank" href="https://www.vdm.io/" title="Location Data">
-				<img src="components/com_locationdata/assets/images/component-300.jpg"/>
+				<img src="components/com_locationdata/assets/images/vdm-component.jpg"/>
 				</a>';
 		}
 		// do any updates needed
@@ -678,7 +678,7 @@ class com_locationdataInstallerScript
 
 
 			echo '<a target="_blank" href="https://www.vdm.io/" title="Location Data">
-				<img src="components/com_locationdata/assets/images/component-300.jpg"/>
+				<img src="components/com_locationdata/assets/images/vdm-component.jpg"/>
 				</a>
 				<h3>Upgrade to Version 1.0.1 Was Successful! Let us know if anything is not working as expected.</h3>';
 		}

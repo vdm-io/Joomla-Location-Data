@@ -11,7 +11,7 @@
 /-------------------------------------------------------------------------------------------------------------------------------/
 
 	@version		1.0.1
-	@build			2nd February, 2017
+	@build			20th August, 2017
 	@created		28th June, 2016
 	@package		Location Data
 	@subpackage		locationdata.php
@@ -229,34 +229,145 @@ class LocationdataModelLocationdata extends JModelList
 		return $icons;
 	}
 
+			
 	public function getGithub()
 	{
+		// load jquery (not sure why... but else the timeago breaks)
+		JHtml::_('jquery.framework');
+		// get the document to load the scripts
 		$document = JFactory::getDocument();
-		$document->addScript(JURI::root() . "media/com_locationdata/js/marked.js");
+		$document->addScript(JURI::root() . "media/com_locationdata/js/timeago.js");
 		$document->addScriptDeclaration('
-		var token = "'.JSession::getFormToken().'";
 		var urlToGetAllOpenIssues = "https://api.github.com/repos/vdm-io/Joomla-Location-Data/issues?state=open&page=1&per_page=5";
 		var urlToGetAllClosedIssues = "https://api.github.com/repos/vdm-io/Joomla-Location-Data/issues?state=closed&page=1&per_page=5";
+		var urlToGetAllReleases = "https://api.github.com/repos/vdm-io/Joomla-Location-Data/releases?page=1&per_page=5";
 		jQuery(document).ready(function () {
 			jQuery.getJSON(urlToGetAllOpenIssues, function (openissues) {
 				jQuery("#openissues").html("");
 				jQuery.each(openissues, function (i, issue) {
+					// set time ago
+					var timeago = jQuery.timeago(new Date(issue.created_at)); 
 					jQuery("#openissues")
             				.append("<h3><a href=\"" + issue.html_url + "\" target=\"_blank\">" + issue.title + "</a></h3>")
-            				.append("<small><em>#" + issue.number + " '.JText::_('COM_LOCATIONDATA_OPENED_BY').' " + issue.user.login + "<em></small>")
+					.append("<img alt=\"@" + issue.user.login + "\" style=\"vertical-align: baseline;\" src=\"" + issue.user.avatar_url +"&amp;s=60\" width=\"30\" height=\"30\"> ")
+            				.append("<em><a href=\"" + issue.user.html_url + "\" target=\"_blank\">" + issue.user.login + "</a> '.JText::_('COM_LOCATIONDATA_OPENED_THIS').' <a href=\"" + issue.html_url + "\" target=\"_blank\">'.JText::_('COM_LOCATIONDATA_ISSUE').'-" + issue.number + "</a> (" + timeago + ")</em>")
             				.append(marked(issue.body))
-            				.append("<a href=\"" + issue.html_url + "\" target=\"_blank\">'.JText::_('COM_LOCATIONDATA_RESPOND_TO_THIS_ISSUE_ON_GITHUB').'</a>...<hr />");
+            				.append("<a href=\"" + issue.html_url + "\" target=\"_blank\"><span class=\'icon-new-tab\'></span>'.JText::_('COM_LOCATIONDATA_RESPOND_TO_THIS_ISSUE_ON_GITHUB').'</a>...<hr />");
     				});
 			});
 			jQuery.getJSON(urlToGetAllClosedIssues, function (closedissues) {
 				jQuery("#closedissues").html("");
 				jQuery.each(closedissues, function (i, issue) {
+					// set time ago
+					var timeago = jQuery.timeago(new Date(issue.created_at)); 
 					jQuery("#closedissues")
             				.append("<h3><a href=\"" + issue.html_url + "\" target=\"_blank\">" + issue.title + "</a></h3>")
-            				.append("<small><em>#" + issue.number + " '.JText::_('COM_LOCATIONDATA_OPENED_BY').' " + issue.user.login + "<em></small>")
+					.append("<img alt=\"@" + issue.user.login + "\" style=\"vertical-align: baseline;\" src=\"" + issue.user.avatar_url +"&amp;s=60\" width=\"30\" height=\"30\"> ")
+            				.append("<em><a href=\"" + issue.user.html_url + "\" target=\"_blank\">" + issue.user.login + "</a> '.JText::_('COM_LOCATIONDATA_OPENED').' <a href=\"" + issue.html_url + "\" target=\"_blank\">'.JText::_('COM_LOCATIONDATA_ISSUE').'-" + issue.number + "</a> (" + timeago + ")</em>")
             				.append(marked(issue.body))
-            				.append("<a href=\"" + issue.html_url + "\" target=\"_blank\">'.JText::_('COM_LOCATIONDATA_REVIEW_THIS_ISSUE_ON_GITHUB').'</a>...<hr />");
+            				.append("<a href=\"" + issue.html_url + "\" target=\"_blank\"><span class=\'icon-new-tab\'></span>'.JText::_('COM_LOCATIONDATA_REVIEW_THIS_ISSUE_ON_GITHUB').'</a>...<hr />");
     				});
+			});
+			jQuery.getJSON(urlToGetAllReleases, function (tagreleases) {				
+				// set the update notice while we are at it
+				var activeVersion = tagreleases[0].tag_name.substring(1);
+				if (activeVersion === manifest.version) {
+					jQuery(".update-notice").html("<small><span style=\'color:green;\'><span class=\'icon-shield\'></span>'.JText::_('COM_LOCATIONDATA_UP_TO_DATE').'</span></small>");
+				} else {
+					jQuery(".update-notice").html("<small><span style=\'color:red;\'><span class=\'icon-warning-circle\'></span>'.JText::_('COM_LOCATIONDATA_OUT_OF_DATE').'</span></small>");
+				}
+				// set the taged releases
+				jQuery("#tagreleases").html("");
+				jQuery.each(tagreleases, function (i, tagrelease) {
+					// set active release
+					var activeNotice = "";
+					if (i === 0) {
+						var activeNotice = "<a class=\'btn btn-small btn-success\' href=\'https://github.com/vdm-io/Joomla-Location-Data/releases/latest\'><span class=\'icon-shield icon-white\'></span> '.JText::_('COM_LOCATIONDATA_LATEST_RELEASE').'</a><br /><br />";
+					}
+					// set time ago
+					var timeago = jQuery.timeago(new Date(tagrelease.published_at)); 
+					jQuery("#tagreleases")
+            				.append("<h3><a href=\"" + tagrelease.html_url + "\" target=\"_blank\">" + tagrelease.name + "</a></h3>")
+					.append(activeNotice)
+					.append("<img alt=\"@" + tagrelease.author.login + "\" style=\"vertical-align: baseline;\" src=\"" + tagrelease.author.avatar_url +"&amp;s=60\" width=\"30\" height=\"30\"> ")
+            				.append("<em><a href=\"" + tagrelease.author.html_url + "\" target=\"_blank\">" + tagrelease.author.login + "</a> '.JText::_('COM_LOCATIONDATA_RELEASED_THIS').'<em> <b><span class=\'icon-tag-2\'></span>" + tagrelease.tag_name+ "</b> (" + timeago + ")")
+            				.append(marked(tagrelease.body))
+            				.append(" <a class=\"hasTooltip\" href=\"" + tagrelease.assets[0].browser_download_url + "\" title=\"'.JText::_('COM_LOCATIONDATA_DOWNLOAD').' " + tagrelease.assets[0].name + "\" target=\"_self\"><span class=\'icon-download\'></span>" + tagrelease.assets[0].name + "</a> (<a class=\"hasTooltip\" href=\"" + tagrelease.assets[0].browser_download_url + "\" title=\"'.JText::_('COM_LOCATIONDATA_TOTAL_DOWNLOADS').'\"><small>" + tagrelease.assets[0].download_count + "</small></a>) ")
+            				.append("| <a href=\"" + tagrelease.html_url + "\" target=\"_blank\" title=\"'.JText::_('COM_LOCATIONDATA_OPEN').' " + tagrelease.name + " '.JText::_('COM_LOCATIONDATA_ON_GITHUB').'\"><span class=\'icon-new-tab\'></span>'.JText::_('COM_LOCATIONDATA_OPEN_ON_GITHUB').'</a>...<hr />");
+    				});
+			});
+		});');
+		$create = '<div class="btn-group pull-right">
+					<a href="https://github.com/vdm-io/Joomla-Location-Data/issues/new" class="btn btn-primary"  target="_blank">'.JText::_('COM_LOCATIONDATA_NEW_ISSUE').'</a>
+				</div></br >';
+		$moreopen = '<b><a href="https://github.com/vdm-io/Joomla-Location-Data/issues" target="_blank">'.JText::_('COM_LOCATIONDATA_VIEW_MORE_ISSUES_ON_GITHUB').'</a>...</b> ';
+		$moreclosed = '<b><a href="https://github.com/vdm-io/Joomla-Location-Data/issues?q=is%3Aissue+is%3Aclosed" target="_blank">'.JText::_('COM_LOCATIONDATA_VIEW_MORE_ISSUES_ON_GITHUB').'</a>...</b> ';
+		$viewissues = '<b><a href="https://github.com/vdm-io/Joomla-Location-Data/releases" target="_blank">'.JText::_('COM_LOCATIONDATA_VIEW_MORE_RELEASES_ON_GITHUB').'</a>...</b> ';
+
+		return (object) array(
+				'openissues' => $create.'<div id="openissues">'.JText::_('COM_LOCATIONDATA_A_FEW_OPEN_ISSUES_FROM_GITHUB_IS_LOADING').'.<span class="loading-dots">.</span></small></div>'.$moreopen, 
+				'closedissues' => $create.'<div id="closedissues">'.JText::_('COM_LOCATIONDATA_A_FEW_CLOSED_ISSUES_FROM_GITHUB_IS_LOADING').'.<span class="loading-dots">.</span></small></div>'.$moreclosed,
+				'tagreleases' => '<div id="tagreleases">'.JText::_('COM_LOCATIONDATA_LAST_FEW_RELEASES_FROM_GITHUB_IS_LOADING').'.<span class="loading-dots">.</span></small></div>'.$viewissues
+		);
+	}			
+			
+	public function getWiki()
+	{
+		$document = JFactory::getDocument();
+		$document->addScriptDeclaration('
+		var gewiki = "https://raw.githubusercontent.com/wiki/vdm-io/Joomla-Location-Data/Home.md";
+		jQuery(document).ready(function () {
+			jQuery.get(gewiki)
+			.success(function(wiki) { 
+				jQuery("#wiki-md").html(marked(wiki));
+			})
+			.error(function(jqXHR, textStatus, errorThrown) { 
+				jQuery("#wiki-md").html("'.JText::_('COM_LOCATIONDATA_PLEASE_CHECK_AGAIN_LATTER').'");
+			});
+		});');
+
+		return '<div id="wiki-md"><small>'.JText::_('COM_LOCATIONDATA_THE_WIKI_IS_LOADING').'.<span class="loading-dots">.</span></small></div>';
+	}
+
+				 
+			
+	public function getNoticeboard()
+	{
+		// get the document to load the scripts
+		$document = JFactory::getDocument();
+		$document->addScript(JURI::root() . "media/com_locationdata/js/marked.js");
+		$document->addScriptDeclaration('
+		var token = "'.JSession::getFormToken().'";
+		var noticeboard = "https://www.vdm.io/locationdata-noticeboard-md";
+		jQuery(document).ready(function () {
+			jQuery.get(noticeboard)
+			.success(function(board) { 
+				if (board.length > 5) {
+					jQuery("#noticeboard-md").html(marked(board));
+					getIS(1,board).done(function(result) {
+						if (result){
+							jQuery("#cpanel_tabTabs a").each(function() {
+								if (this.href.indexOf("#vast_development_method") >= 0) {
+									var textVDM = jQuery(this).text();
+									jQuery(this).html("<span class=\"label label-important vdm-new-notice\">1</span> "+textVDM);
+									jQuery(this).attr("id","vdm-new-notice");
+									jQuery("#vdm-new-notice").click(function() {
+										getIS(2,board).done(function(result) {
+												if (result) {
+												jQuery(".vdm-new-notice").fadeOut(500);
+											}
+										});
+									});
+								}
+							});
+						}
+					});
+				} else {
+					jQuery("#noticeboard-md").html("'.JText::_('COM_LOCATIONDATA_ALL_IS_GOOD_PLEASE_CHECK_AGAIN_LATTER').'");
+				}
+			})
+			.error(function(jqXHR, textStatus, errorThrown) { 
+				jQuery("#noticeboard-md").html("'.JText::_('COM_LOCATIONDATA_ALL_IS_GOOD_PLEASE_CHECK_AGAIN_LATTER').'");
 			});
 		});
 		// to check is READ/NEW
@@ -289,18 +400,10 @@ class LocationdataModelLocationdata extends JModelList
 				$(".loading-dots").text(dots);
 			} , 500);
 		});');
-		$create = '<div class="btn-group pull-right">
-					<a href="https://github.com/vdm-io/Joomla-Location-Data/issues/new" class="btn btn-primary"  target="_blank">'.JText::_('COM_LOCATIONDATA_NEW_ISSUE').'</a>
-				</div></br >';
-		$moreopen = '<b><a href="https://github.com/vdm-io/Joomla-Location-Data/issues" target="_blank">'.JText::_('COM_LOCATIONDATA_VIEW_MORE_ISSUES_ON_GITHUB').'</a>...</b>';
-		$moreclosed = '<b><a href="https://github.com/vdm-io/Joomla-Location-Data/issues?q=is%3Aissue+is%3Aclosed" target="_blank">'.JText::_('COM_LOCATIONDATA_VIEW_MORE_ISSUES_ON_GITHUB').'</a>...</b>';
 
-		return (object) array(
-				'openissues' => $create.'<div id="openissues">'.JText::_('COM_LOCATIONDATA_A_FEW_OPEN_ISSUES_FROM_GITHUB_IS_LOADING').'.<span class="loading-dots">.</span></small></div>'.$moreopen, 
-				'closedissues' => $create.'<div id="closedissues">'.JText::_('COM_LOCATIONDATA_A_FEW_CLOSED_ISSUES_FROM_GITHUB_IS_LOADING').'.<span class="loading-dots">.</span></small></div>'.$moreclosed
-		);
-	}
-
+		return '<div id="noticeboard-md">'.JText::_('COM_LOCATIONDATA_THE_NOTICE_BOARD_IS_LOADING').'.<span class="loading-dots">.</span></small></div>';
+	}			
+			
 	public function getReadme()
 	{
 		$document = JFactory::getDocument();
@@ -316,64 +419,6 @@ class LocationdataModelLocationdata extends JModelList
 			});
 		});');
 
-		return '<div id="readme-md">'.JText::_('COM_LOCATIONDATA_THE_README_IS_LOADING').'.<span class="loading-dots">.</span></small></div>';
-	}
-
-	public function getWiki()
-	{
-		$document = JFactory::getDocument();
-		$document->addScriptDeclaration('
-		var gewiki = "https://raw.githubusercontent.com/wiki/vdm-io/Joomla-Location-Data/Home.md";
-		jQuery(document).ready(function () {
-			jQuery.get(gewiki)
-			.success(function(wiki) { 
-				jQuery("#wiki-md").html(marked(wiki));
-			})
-			.error(function(jqXHR, textStatus, errorThrown) { 
-				jQuery("#wiki-md").html("'.JText::_('COM_LOCATIONDATA_PLEASE_CHECK_AGAIN_LATTER').'");
-			});
-		});');
-
-		return '<div id="wiki-md">'.JText::_('COM_LOCATIONDATA_THE_WIKI_IS_LOADING').'.<span class="loading-dots">.</span></small></div>';
-	}
-
-	public function getNoticeboard()
-	{
-		$document = JFactory::getDocument();
-		$document->addScriptDeclaration('
-		var noticeboard = "https://www.vdm.io/locationdata-noticeboard-md";
-		jQuery(document).ready(function () {
-			jQuery.get(noticeboard)
-			.success(function(board) { 
-				if (board.length > 5) {
-					jQuery("#noticeboard-md").html(marked(board));
-					getIS(1,board).done(function(result) {
-						if (result){
-							jQuery("#cpanel_tabTabs a").each(function() {
-								if (this.href.indexOf("#vast_development_method") >= 0) {
-									var textVDM = jQuery(this).text();
-									jQuery(this).html("<span class=\"label label-important vdm-new-notice\">1</span> "+textVDM);
-									jQuery(this).attr("id","vdm-new-notice");
-									jQuery("#vdm-new-notice").click(function() {
-										getIS(2,board).done(function(result) {
-												if (result) {
-												jQuery(".vdm-new-notice").fadeOut(500);
-											}
-										});
-									});
-								}
-							});
-						}
-					});
-				} else {
-					jQuery("#noticeboard-md").html("'.JText::_('COM_LOCATIONDATA_ALL_IS_GOOD_PLEASE_CHECK_AGAIN_LATTER').'");
-				}
-			})
-			.error(function(jqXHR, textStatus, errorThrown) { 
-				jQuery("#noticeboard-md").html("'.JText::_('COM_LOCATIONDATA_ALL_IS_GOOD_PLEASE_CHECK_AGAIN_LATTER').'");
-			});
-		});');
-
-		return '<div id="noticeboard-md">'.JText::_('COM_LOCATIONDATA_THE_NOTICE_BOARD_IS_LOADING').'.<span class="loading-dots">.</span></small></div>';
-	}
+		return '<div id="readme-md"><small>'.JText::_('COM_LOCATIONDATA_THE_README_IS_LOADING').'.<span class="loading-dots">.</span></small></div>';
+	}			
 }

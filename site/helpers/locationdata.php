@@ -11,7 +11,7 @@
 /-------------------------------------------------------------------------------------------------------------------------------/
 
 	@version		1.0.1
-	@build			2nd February, 2017
+	@build			20th August, 2017
 	@created		28th June, 2016
 	@package		Location Data
 	@subpackage		locationdata.php
@@ -96,7 +96,7 @@ abstract class LocationdataHelper
 		// check that we have protocol
 		if (!$protocol)
 		{
-			if (!$protocol = isValidIP($ip, $strict = true))
+			if (!$protocol = self::isValidIP($ip, $strict = true))
 			{
 				// set the default
 				$ip = '0.0.0.0';
@@ -105,6 +105,8 @@ abstract class LocationdataHelper
 		}
 		return self::getLocationdataFactory($ip, $protocol)->getInfo((int) $mode, (int) $string, (float) $value, $base);
 	}
+
+	public static $forceLocationdataTable = true; 
 
 	public static $defaultComponent = "com_locationdata"; 
 
@@ -118,7 +120,7 @@ abstract class LocationdataHelper
 			// make sure to include the factory file
 			include_once 'locationdatafactory.php';
 			// first load the factory
-			self::$locationdataFactory[$getter] = new LocationdataFactory($ip, $protocol, self::$defaultComponent);
+			self::$locationdataFactory[$getter] = new LocationdataFactory($ip, $protocol, self::$defaultComponent, self::$forceLocationdataTable);
 		}
 		return self::$locationdataFactory[$getter];
 	}
@@ -304,11 +306,11 @@ abstract class LocationdataHelper
 		}
 		return false;
 	}
-
+			
 	/**
 	* Tests if supplied IP address is IPv4 of IPv6 and valid.
 	**/
-	protected static function isValidIP($ip, $strict = true)
+	public static function isValidIP($ip, $strict = true)
 	{
 		if ($strict)
 		{
@@ -385,7 +387,7 @@ abstract class LocationdataHelper
 			if ($ip >= 4294967040) return false;
 		}
 		return true;
-	}
+	}			
 
 	/**
 	* @param float $amount
@@ -445,8 +447,13 @@ abstract class LocationdataHelper
 		}
 		return false;
 	}
-	
-	public static function makeMoney($number,$currency = false)
+			
+	/**
+	 * @param $number
+	 * @param bool $currency
+	 * @return mixed|number
+	 */
+	public static function makeMoney($number, $currency = false)
 	{
 		// first check if we have a number
 		if (is_numeric($number))
@@ -480,7 +487,7 @@ abstract class LocationdataHelper
 					$currency = self::getCurrencyDetails();
 				}
 			}
-		}	
+		}
 		else
 		{
 			$currency = self::getCurrencyDetails($currency);
@@ -493,7 +500,7 @@ abstract class LocationdataHelper
 				$format = $currency->currency_positivestyle;
 				$sign = '+';
 			}
-			else 
+			else
 			{
 				$format = $currency->currency_negativestyle;
 				$sign = '-';
@@ -507,8 +514,8 @@ abstract class LocationdataHelper
 			return $moneyMade;
 		}
 		return $number;
-	}
-
+	}			 
+			
 	/**
 	 *	Change to nice fancy date
 	 */
@@ -519,6 +526,18 @@ abstract class LocationdataHelper
 			$date = strtotime($date);
 		}
 		return date('jS \o\f F Y',$date);
+	}
+
+	/**
+	 *	Change to nice fancy day time and date
+	 */
+	public static function fancyDayTimeDate($time)
+	{
+		if (!self::isValidTimeStamp($time))
+		{
+			$time = strtotime($time);
+		}
+		return date('D ga jS \o\f F Y',$time);
 	}
 
 	/**
@@ -554,7 +573,7 @@ abstract class LocationdataHelper
 		&& ($timestamp <= PHP_INT_MAX)
 		&& ($timestamp >= ~PHP_INT_MAX);
 	}
-
+			 
 	public static function getFilePath($type, $name = 'listing', $key = '', $fileType = '.json', $PATH = JPATH_COMPONENT_SITE)
 	{
 		if (!self::checkString(self::${$type.$name}))
@@ -676,12 +695,23 @@ abstract class LocationdataHelper
 	**/
 	public static function getModel($name, $path = JPATH_COMPONENT_SITE, $component = 'locationdata')
 	{
-		// load some joomla helpers
-		JLoader::import('joomla.application.component.model');
+		// full path
+		$fullPath = $path . '/models';
 		// load the model file
-		JLoader::import( $name, $path . '/models' );
-		// return instance
-		return JModelLegacy::getInstance( $name, $component.'Model' );
+		JModelLegacy::addIncludePath($fullPath);
+		// get instance
+		$model = JModelLegacy::getInstance( $name, $component.'Model' );
+		// if model not found
+		if ($model == false)
+		{
+			require_once $fullPath.'/'.strtolower($name).'.php';
+			// build class name
+			$class = $prefix.$name;
+			// initialize the model
+			new $class();
+			$model = JModelLegacy::getInstance($name, $prefix);
+		}
+		return $model;
 	}
 	
 	/**
@@ -980,13 +1010,25 @@ abstract class LocationdataHelper
 
 		if (self::checkArray($where))
 		{
+			// prep main <-- why? well if $main='' is empty then $table can be categories or users
+			if (self::checkString($main))
+			{
+				$main = '_'.ltrim($main, '_');
+			}
 			// Get a db connection.
 			$db = JFactory::getDbo();
 			// Create a new query object.
 			$query = $db->getQuery(true);
 
 			$query->select($db->quoteName(array($what)));
-			$query->from($db->quoteName('#__'.$main.'_'.$table));
+			if (empty($table))
+			{
+				$query->from($db->quoteName('#__'.$main));
+			}
+			else
+			{
+				$query->from($db->quoteName('#_'.$main.'_'.$table));
+			}
 			$query->where($db->quoteName($whereString) . ' '.$operator.' (' . implode(',',$where) . ')');
 			$db->setQuery($query);
 			$db->execute();
@@ -1299,7 +1341,13 @@ abstract class LocationdataHelper
 		return false;
 	}
 
+	// typo sorry!
 	public static function sorten($string, $length = 40, $addTip = true)
+	{
+		return self::shorten($string, $length, $addTip);
+	}
+
+	public static function shorten($string, $length = 40, $addTip = true)
 	{
 		if (self::checkString($string))
 		{
@@ -1322,7 +1370,7 @@ abstract class LocationdataHelper
 			$final	= strlen($newString);
 			if ($initial != $final && $addTip)
 			{
-				$title = self::sorten($string, 400 , false);
+				$title = self::shorten($string, 400 , false);
 				return '<span class="hasTip" title="'.$title.'" style="cursor:help">'.trim($newString).'...</span>';
 			}
 			elseif ($initial != $final && !$addTip)
@@ -1333,73 +1381,103 @@ abstract class LocationdataHelper
 		return $string;
 	}
 
-	public static function safeString($string, $type = 'L', $spacer = '_')
+	public static function safeString($string, $type = 'L', $spacer = '_', $replaceNumbers = true)
 	{
-		// remove all numbers and replace with english text version (works well only up to a thousand)
-		$string = self::replaceNumbers($string);
-
-		if (self::checkString($string))
+		if ($replaceNumbers === true)
 		{
+			// remove all numbers and replace with english text version (works well only up to millions)
+			$string = self::replaceNumbers($string);
+		}
+		// 0nly continue if we have a string
+                if (self::checkString($string))
+                {
+			// create file name without the extention that is safe
+			if ($type === 'filename')
+			{
+				// make sure VDM is not in the string
+				$string = str_replace('VDM', 'vDm', $string);
+				// Remove anything which isn't a word, whitespace, number
+				// or any of the following caracters -_()
+				// If you don't need to handle multi-byte characters
+				// you can use preg_replace rather than mb_ereg_replace
+				// Thanks @Łukasz Rysiak!
+				// $string = mb_ereg_replace("([^\w\s\d\-_\(\)])", '', $string);
+				$string = preg_replace("([^\w\s\d\-_\(\)])", '', $string);
+				// http://stackoverflow.com/a/2021729/1429677
+				return preg_replace('/\s+/', ' ', $string);
+			}
 			// remove all other characters
 			$string = trim($string);
 			$string = preg_replace('/'.$spacer.'+/', ' ', $string);
 			$string = preg_replace('/\s+/', ' ', $string);
 			$string = preg_replace("/[^A-Za-z ]/", '', $string);
-			// return a string with all first letter of each word uppercase(no undersocre)
-			if ($type == 'W')
-				    {
-			    return ucwords(strtolower($string));
-			}
-				    elseif ($type == 'w')
-				    {
-			    return strtolower($string);
-			}
-				    elseif ($type == 'Ww')
-				    {
-			    return ucfirst(strtolower($string));
-			}
-				    elseif ($type == 'WW')
-				    {
-			    return strtoupper($string);
-			}
-			elseif ($type == 'U')
+			// select final adaptations
+			if ($type === 'L' || $type === 'strtolower')
+                        {
+                                // replace white space with underscore
+                                $string = preg_replace('/\s+/', $spacer, $string);
+                                // default is to return lower
+                                return strtolower($string);
+                        }
+			elseif ($type === 'W')
 			{
-				// replace white space with underscore
-				$string = preg_replace('/\s+/', $spacer, $string);
-				// return all upper
-				return strtoupper($string);
+				// return a string with all first letter of each word uppercase(no undersocre)
+				return ucwords(strtolower($string));
 			}
-			elseif ($type == 'F')
+			elseif ($type === 'w' || $type === 'word')
 			{
-				// replace white space with underscore
-				$string = preg_replace('/\s+/', $spacer, $string);
-				// return with first caracter to upper
+				// return a string with all lowercase(no undersocre)
+				return strtolower($string);
+			}
+			elseif ($type === 'Ww' || $type === 'Word')
+			{
+				// return a string with first letter of the first word uppercase and all the rest lowercase(no undersocre)
 				return ucfirst(strtolower($string));
 			}
-			elseif ($type == 'L')
+			elseif ($type === 'WW' || $type === 'WORD')
 			{
-				// replace white space with underscore
-				$string = preg_replace('/\s+/', $spacer, $string);
-				// default is to return lower
-				    return strtolower($string);
+				// return a string with all the uppercase(no undersocre)
+				return strtoupper($string);
 			}
-
-			// return string
-			return $string;
-		}
-		// not a string
-		return '';
+                        elseif ($type === 'U' || $type === 'strtoupper')
+                        {
+                                // replace white space with underscore
+                                $string = preg_replace('/\s+/', $spacer, $string);
+                                // return all upper
+                                return strtoupper($string);
+                        }
+                        elseif ($type === 'F' || $type === 'ucfirst')
+                        {
+                                // replace white space with underscore
+                                $string = preg_replace('/\s+/', $spacer, $string);
+                                // return with first caracter to upper
+                                return ucfirst(strtolower($string));
+                        }
+                        elseif ($type === 'cA' || $type === 'cAmel' || $type === 'camelcase')
+			{
+				// convert all words to first letter uppercase
+				$string = ucwords(strtolower($string));
+				// remove white space
+				$string = preg_replace('/\s+/', '', $string);
+				// now return first letter lowercase
+				return lcfirst($string);
+			}
+                        // return string
+                        return $string;
+                }
+                // not a string
+                return '';
 	}
 
-	public static function htmlEscape($var, $charset = 'UTF-8', $sorten = false, $length = 40)
+	public static function htmlEscape($var, $charset = 'UTF-8', $shorten = false, $length = 40)
 	{
 		if (self::checkString($var))
 		{
 			$filter = new JFilterInput();
 			$string = $filter->clean(html_entity_decode(htmlentities($var, ENT_COMPAT, $charset)), 'HTML');
-			if ($sorten)
+			if ($shorten)
 			{
-           		return self::sorten($string,$length);
+           		return self::shorten($string,$length);
 			}
 			return $string;
 		}

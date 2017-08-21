@@ -58,7 +58,8 @@ $componentParams = JComponentHelper::getParams('com_locationdata');
 <div id="locationdata_loader" style="display: none;">
 <form action="<?php echo JRoute::_('index.php?option=com_locationdata&layout=edit&id='.(int) $this->item->id.$this->referral); ?>" method="post" name="adminForm" id="adminForm" class="form-validate" enctype="multipart/form-data">
 
-	<?php echo JLayoutHelper::render('exchange_rate.details_above', $this); ?><div class="form-horizontal">
+	<?php echo JLayoutHelper::render('exchange_rate.details_above', $this); ?>
+<div class="form-horizontal">
 
 	<?php echo JHtml::_('bootstrap.startTabSet', 'exchange_rateTab', array('active' => 'details')); ?>
 
@@ -110,6 +111,7 @@ $componentParams = JComponentHelper::getParams('com_locationdata');
 	<div>
 		<input type="hidden" name="task" value="exchange_rate.edit" />
 		<?php echo JHtml::_('form.token'); ?>
+	</div>
 	</div>
 </div>
 </form>
