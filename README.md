@@ -62,6 +62,7 @@ Copyright:
 
 ## Donations
 
-If you want to support this project, please consider donating:
-* PayPal: pay@vdm.io
-* Bitcoin: 3H35PYwikEosvcjxHXGPLS1GufZ4b4iFu3 
+Come on buy me a coffee :)
+ * PayPal: [paypal.me/payvdm](https://www.paypal.me/payvdm)
+ * Bitcoin: 1FLxiT6wyxgZ3boeviLkYJ1DRpp41uzpxa
+ * Ethereum: 0x243392daa3c9c8bc841fcacf7c7f72541cb16823

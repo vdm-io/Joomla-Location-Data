@@ -10,8 +10,8 @@
                                                         |_| 				
 /-------------------------------------------------------------------------------------------------------------------------------/
 
-	@version		@update number 101 of this MVC
-	@build			18th January, 2017
+	@version		@update number 102 of this MVC
+	@build			22nd August, 2017
 	@created		28th June, 2016
 	@package		Location Data
 	@subpackage		default.php
@@ -97,7 +97,7 @@ jQuery(document).ready(function($) {
 	<div class="well well-small">
 		<p><?php echo JText::_('COM_LOCATIONDATA_THANKS_TO'); ?> <a target="_blank" href="http://finance.yahoo.com/currency-converter/"><?php echo JText::_('COM_LOCATIONDATA_YAHOO_FINANCE'); ?></a> and  <a target="_blank" href="https://github.com/ExchangeRates/README"><?php echo JText::_('COM_LOCATIONDATA_VAST_DEVELOPMENT_METHOD'); ?></a> <?php echo JText::_('COM_LOCATIONDATA_WE_CAN_UPDATE_YOUR_DB_WITH_THE_LATEST_EXCHANGE_RATES'); ?></p>
 		<p><?php echo JText::_('COM_LOCATIONDATA_VDM_CREATED_A'); ?> <a target="_blank" href="https://github.com/ExchangeRates/Factory"><?php echo JText::_('COM_LOCATIONDATA_SHELL_SCRIPT'); ?></a> <?php echo JText::_('that updates a github repository with Yahoo\'s latest rates in a very methodical, stable and accurate way.'); ?> <?php echo JText::_('COM_LOCATIONDATA_THIS_IS_THE'); ?> <a target="_blank" href="https://raw.githubusercontent.com/ExchangeRates/yahoo/master/rates.json"><?php echo JText::_('COM_LOCATIONDATA_JSON'); ?></a> <?php echo JText::_('COM_LOCATIONDATA_FILE_WE_USED_DURING_EACH_UPDATE_OF_ALL_YOUR_LOCAL_EXCHANGE_RATES_THEREFORE_UPDATES_ARE_VERY_EASY_AND_EXTREMELY_FAST'); ?></p>
-		<p><?php echo JText::_('COM_LOCATIONDATA_VDM_NEEDS_YOUR_SUPPORT_PLEASE_MAKE_A_DONATION_VIA'); ?> <a target="_blank" href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=LC83G3UD9W34N"><?php echo JText::_('COM_LOCATIONDATA_PAYPAL'); ?></a> or BITCOIN <code> 3H35PYwikEosvcjxHXGPLS1GufZ4b4iFu3</code> <?php echo JText::_('COM_LOCATIONDATA_NOW'); ?>!</p>
+		<p><?php echo JText::_('COM_LOCATIONDATA_VDM_NEEDS_YOUR_SUPPORT_PLEASE_MAKE_A_DONATION_VIA'); ?> <a target="_blank" href="https://www.paypal.me/payvdm">paypal.me/payvdm</a> or BITCOIN <code>1FLxiT6wyxgZ3boeviLkYJ1DRpp41uzpxa</code>  or Ethereum <code>0x243392daa3c9c8bc841fcacf7c7f72541cb16823</code> <?php echo JText::_('COM_LOCATIONDATA_NOW'); ?>!</p>
 	</div>
 </div>
 <div id="uploader" style="display:none;">
