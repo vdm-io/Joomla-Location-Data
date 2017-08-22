@@ -11,7 +11,7 @@
 /-------------------------------------------------------------------------------------------------------------------------------/
 
 	@version		1.0.1
-	@build			20th August, 2017
+	@build			22nd August, 2017
 	@created		28th June, 2016
 	@package		Location Data
 	@subpackage		default.php
