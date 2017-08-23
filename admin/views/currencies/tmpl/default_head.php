@@ -10,8 +10,8 @@
                                                         |_| 				
 /-------------------------------------------------------------------------------------------------------------------------------/
 
-	@version		@update number 17 of this MVC
-	@build			18th October, 2016
+	@version		@update number 19 of this MVC
+	@build			23rd August, 2017
 	@created		9th July, 2015
 	@package		Location Data
 	@subpackage		default_head.php

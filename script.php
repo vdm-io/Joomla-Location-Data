@@ -11,7 +11,7 @@
 /-------------------------------------------------------------------------------------------------------------------------------/
 
 	@version		1.0.1
-	@build			22nd August, 2017
+	@build			23rd August, 2017
 	@created		28th June, 2016
 	@package		Location Data
 	@subpackage		script.php
@@ -501,7 +501,7 @@ class com_locationdataInstallerScript
 			$currency->type_title = 'Locationdata Currency';
 			$currency->type_alias = 'com_locationdata.currency';
 			$currency->table = '{"special": {"dbtable": "#__locationdata_currency","key": "id","type": "Currency","prefix": "locationdataTable","config": "array()"},"common": {"dbtable": "#__ucm_content","key": "ucm_id","type": "Corecontent","prefix": "JTable","config": "array()"}}';
-			$currency->field_mappings = '{"common": {"core_content_item_id": "id","core_title": "name","core_state": "published","core_alias": "alias","core_created_time": "created","core_modified_time": "modified","core_body": "null","core_hits": "hits","core_publish_up": "null","core_publish_down": "null","core_access": "access","core_params": "params","core_featured": "null","core_metadata": "null","core_language": "null","core_images": "null","core_urls": "null","core_version": "version","core_ordering": "ordering","core_metakey": "null","core_metadesc": "null","core_catid": "null","core_xreference": "null","asset_id": "asset_id"},"special": {"name":"name","codethree":"codethree","numericcode":"numericcode","symbol":"symbol","alias":"alias","positivestyle":"positivestyle","thousands":"thousands","decimalsymbol":"decimalsymbol","decimalplace":"decimalplace","negativestyle":"negativestyle"}}';
+			$currency->field_mappings = '{"common": {"core_content_item_id": "id","core_title": "name","core_state": "published","core_alias": "alias","core_created_time": "created","core_modified_time": "modified","core_body": "null","core_hits": "hits","core_publish_up": "null","core_publish_down": "null","core_access": "access","core_params": "params","core_featured": "null","core_metadata": "null","core_language": "null","core_images": "null","core_urls": "null","core_version": "version","core_ordering": "ordering","core_metakey": "null","core_metadesc": "null","core_catid": "null","core_xreference": "null","asset_id": "asset_id"},"special": {"name":"name","codethree":"codethree","numericcode":"numericcode","symbol":"symbol","positivestyle":"positivestyle","decimalsymbol":"decimalsymbol","thousands":"thousands","negativestyle":"negativestyle","decimalplace":"decimalplace","alias":"alias"}}';
 			$currency->router = 'LocationdataHelperRoute::getCurrencyRoute';
 			$currency->content_history_options = '{"formFile": "administrator/components/com_locationdata/models/forms/currency.xml","hideFields": ["asset_id","checked_out","checked_out_time","version"],"ignoreChanges": ["modified_by","modified","checked_out","checked_out_time","version","hits"],"convertToInt": ["published","ordering","numericcode","decimalplace"],"displayLookup": [{"sourceColumn": "created_by","targetTable": "#__users","targetColumn": "id","displayColumn": "name"},{"sourceColumn": "access","targetTable": "#__viewlevels","targetColumn": "id","displayColumn": "title"},{"sourceColumn": "modified_by","targetTable": "#__users","targetColumn": "id","displayColumn": "name"}]}';
 
@@ -535,20 +535,18 @@ class com_locationdataInstallerScript
 
 			// Install the global extenstion params.
 			$query = $db->getQuery(true);
-
 			// Field to update.
 			$fields = array(
 				$db->quoteName('params') . ' = ' . $db->quote('{"autorName":"Llewellyn van der Merwe","autorEmail":"joomla@vdm.io","local_encryption":"localKey34fdsEkl","country":"USA","timer_exchange_rate":"-5 hours","timer_ip_table":"-1 day","use_proxy":"true","check_in":"-1 day","save_history":"1","history_limit":"10","uikit_load":"1","uikit_min":"","uikit_style":""}'),
 			);
-
 			// Condition.
 			$conditions = array(
 				$db->quoteName('element') . ' = ' . $db->quote('com_locationdata')
 			);
-
 			$query->update($db->quoteName('#__extensions'))->set($fields)->where($conditions);
 			$db->setQuery($query);
 			$allDone = $db->execute();
+
 			echo '<a target="_blank" href="https://www.vdm.io/" title="Location Data">
 				<img src="components/com_locationdata/assets/images/vdm-component.jpg"/>
 				</a>';
@@ -594,7 +592,7 @@ class com_locationdataInstallerScript
 			$currency->type_title = 'Locationdata Currency';
 			$currency->type_alias = 'com_locationdata.currency';
 			$currency->table = '{"special": {"dbtable": "#__locationdata_currency","key": "id","type": "Currency","prefix": "locationdataTable","config": "array()"},"common": {"dbtable": "#__ucm_content","key": "ucm_id","type": "Corecontent","prefix": "JTable","config": "array()"}}';
-			$currency->field_mappings = '{"common": {"core_content_item_id": "id","core_title": "name","core_state": "published","core_alias": "alias","core_created_time": "created","core_modified_time": "modified","core_body": "null","core_hits": "hits","core_publish_up": "null","core_publish_down": "null","core_access": "access","core_params": "params","core_featured": "null","core_metadata": "null","core_language": "null","core_images": "null","core_urls": "null","core_version": "version","core_ordering": "ordering","core_metakey": "null","core_metadesc": "null","core_catid": "null","core_xreference": "null","asset_id": "asset_id"},"special": {"name":"name","codethree":"codethree","numericcode":"numericcode","symbol":"symbol","alias":"alias","positivestyle":"positivestyle","thousands":"thousands","decimalsymbol":"decimalsymbol","decimalplace":"decimalplace","negativestyle":"negativestyle"}}';
+			$currency->field_mappings = '{"common": {"core_content_item_id": "id","core_title": "name","core_state": "published","core_alias": "alias","core_created_time": "created","core_modified_time": "modified","core_body": "null","core_hits": "hits","core_publish_up": "null","core_publish_down": "null","core_access": "access","core_params": "params","core_featured": "null","core_metadata": "null","core_language": "null","core_images": "null","core_urls": "null","core_version": "version","core_ordering": "ordering","core_metakey": "null","core_metadesc": "null","core_catid": "null","core_xreference": "null","asset_id": "asset_id"},"special": {"name":"name","codethree":"codethree","numericcode":"numericcode","symbol":"symbol","positivestyle":"positivestyle","decimalsymbol":"decimalsymbol","thousands":"thousands","negativestyle":"negativestyle","decimalplace":"decimalplace","alias":"alias"}}';
 			$currency->router = 'LocationdataHelperRoute::getCurrencyRoute';
 			$currency->content_history_options = '{"formFile": "administrator/components/com_locationdata/models/forms/currency.xml","hideFields": ["asset_id","checked_out","checked_out_time","version"],"ignoreChanges": ["modified_by","modified","checked_out","checked_out_time","version","hits"],"convertToInt": ["published","ordering","numericcode","decimalplace"],"displayLookup": [{"sourceColumn": "created_by","targetTable": "#__users","targetColumn": "id","displayColumn": "name"},{"sourceColumn": "access","targetTable": "#__viewlevels","targetColumn": "id","displayColumn": "title"},{"sourceColumn": "modified_by","targetTable": "#__users","targetColumn": "id","displayColumn": "name"}]}';
 

@@ -148,15 +148,6 @@
 			message="Error! Please add currency symbol here."
 			hint="COM_LOCATIONDATA_CURRENCY_SYMBOL_HINT"
 		/>
-		<!-- Alias Field. Type: Text. (joomla) -->
-		<field
-			type="text"
-			name="alias"
-			label="COM_LOCATIONDATA_CURRENCY_ALIAS_LABEL"
-			description="JFIELD_ALIAS_DESC"
-			filter="STRING"
-			hint="COM_LOCATIONDATA_CURRENCY_ALIAS_HINT"
-		/>
 		<!-- Positivestyle Field. Type: Text. (joomla) -->
 		<field
 			type="text"
@@ -169,18 +160,6 @@
 			filter="STRING"
 			message="Error! Please add currency positive style here."
 			hint="COM_LOCATIONDATA_CURRENCY_POSITIVESTYLE_HINT"
-		/>
-		<!-- Thousands Field. Type: Text. (joomla) -->
-		<field
-			type="text"
-			name="thousands"
-			label="COM_LOCATIONDATA_CURRENCY_THOUSANDS_LABEL"
-			size="40"
-			class="text_area"
-			required="true"
-			filter="STRING"
-			message="Error! Please add currency thousands separator here."
-			hint="COM_LOCATIONDATA_CURRENCY_THOUSANDS_HINT"
 		/>
 		<!-- Decimalsymbol Field. Type: Text. (joomla) -->
 		<field
@@ -197,6 +176,31 @@
 			message="Error! Please add currency decimal symbol here."
 			hint="COM_LOCATIONDATA_CURRENCY_DECIMALSYMBOL_HINT"
 		/>
+		<!-- Thousands Field. Type: Text. (joomla) -->
+		<field
+			type="text"
+			name="thousands"
+			label="COM_LOCATIONDATA_CURRENCY_THOUSANDS_LABEL"
+			size="40"
+			class="text_area"
+			required="true"
+			filter="STRING"
+			message="Error! Please add currency thousands separator here."
+			hint="COM_LOCATIONDATA_CURRENCY_THOUSANDS_HINT"
+		/>
+		<!-- Negativestyle Field. Type: Text. (joomla) -->
+		<field
+			type="text"
+			name="negativestyle"
+			label="COM_LOCATIONDATA_CURRENCY_NEGATIVESTYLE_LABEL"
+			size="40"
+			description="COM_LOCATIONDATA_CURRENCY_NEGATIVESTYLE_DESCRIPTION"
+			class="text_area"
+			required="true"
+			filter="STRING"
+			message="Error! Please add currency negative style here."
+			hint="COM_LOCATIONDATA_CURRENCY_NEGATIVESTYLE_HINT"
+		/>
 		<!-- Decimalplace Field. Type: Text. (joomla) -->
 		<field
 			type="text"
@@ -212,18 +216,14 @@
 			message="Error! Please add currency decimal place here."
 			hint="COM_LOCATIONDATA_CURRENCY_DECIMALPLACE_HINT"
 		/>
-		<!-- Negativestyle Field. Type: Text. (joomla) -->
+		<!-- Alias Field. Type: Text. (joomla) -->
 		<field
 			type="text"
-			name="negativestyle"
-			label="COM_LOCATIONDATA_CURRENCY_NEGATIVESTYLE_LABEL"
-			size="40"
-			description="COM_LOCATIONDATA_CURRENCY_NEGATIVESTYLE_DESCRIPTION"
-			class="text_area"
-			required="true"
+			name="alias"
+			label="COM_LOCATIONDATA_CURRENCY_ALIAS_LABEL"
+			description="JFIELD_ALIAS_DESC"
 			filter="STRING"
-			message="Error! Please add currency negative style here."
-			hint="COM_LOCATIONDATA_CURRENCY_NEGATIVESTYLE_HINT"
+			hint="COM_LOCATIONDATA_CURRENCY_ALIAS_HINT"
 		/>
 	</fieldset>
 	
