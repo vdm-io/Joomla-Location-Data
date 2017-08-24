@@ -14,7 +14,7 @@
 	@build			24th August, 2017
 	@created		28th June, 2016
 	@package		Location Data
-	@subpackage		category.php
+	@subpackage		default_api_releases.php
 	@author			Llewellyn van der Merwe <https://www.vdm.io/>	
 	@copyright		Copyright (C) 2015. All Rights Reserved
 	@license		GNU/GPL Version 2 or later - http://www.gnu.org/licenses/gpl-2.0.html 
@@ -24,9 +24,7 @@
 /-----------------------------------------------------------------------------------------------------------------------------*/
 
 // No direct access to this file
-defined('_JEXEC') or die('Restricted access');
+defined('_JEXEC') or die('Restricted access'); 
 
-/**
- * Locationdata Component Category Tree
- */
-
+?>
+<?php echo $this->github->tagreleases; ?>
