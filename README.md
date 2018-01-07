@@ -1,3 +1,5 @@
+# Abandoned since yahoo currancies has [been discontinued](http://www.financial-hacker.com/bye-yahoo-and-thank-you-for-the-fish/). 
+
 # Location Data (1.0.1)
 
  ![Location Data image](https://raw.githubusercontent.com/vdm-io/Joomla-Location-Data/master/admin/assets/images/vdm-component.jpg "The Location Data")
