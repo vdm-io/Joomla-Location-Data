@@ -1,4 +1,4 @@
-# Abandoned since yahoo currancies has [been discontinued](http://www.financial-hacker.com/bye-yahoo-and-thank-you-for-the-fish/). 
+# Abandoned since yahoo currencies has [been discontinued](http://www.financial-hacker.com/bye-yahoo-and-thank-you-for-the-fish/). 
 
 # Location Data (1.0.1)
 
